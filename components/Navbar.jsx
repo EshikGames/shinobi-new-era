@@ -14,6 +14,7 @@ export default function Navbar() {
     { href: "/characters", label: "Characters" },
     { href: "/play", label: "Play" },
     { href: "/download", label: "Download" },
+    { href: "/early-access", label: "Early Access" },
     { href: "/faq", label: "FAQ" },
   ];
 
@@ -58,6 +59,8 @@ export default function Navbar() {
           onClick={() => setOpen(!open)}
           className="flex flex-col gap-1.5 md:hidden"
           aria-label="Toggle menu"
+          aria-expanded={open}
+          aria-controls="mobile-navigation"
         >
           <span
             className={`h-0.5 w-6 bg-white transition ${
@@ -77,7 +80,7 @@ export default function Navbar() {
 
       {/* Mobile dropdown menu */}
       {open && (
-        <div className="flex flex-col gap-1 border-t border-white/5 bg-[#0a0a0f]/95 px-6 py-4 md:hidden">
+        <div id="mobile-navigation" className="flex flex-col gap-1 border-t border-white/5 bg-[#0a0a0f]/95 px-6 py-4 md:hidden">
           {links.map((l) => (
             <Link
               key={l.href}
