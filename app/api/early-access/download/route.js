@@ -3,7 +3,7 @@ import { createEarlyAccessDb, consumeRateLimit, audit } from "@/lib/early-access
 import { readSupporterSession } from "@/lib/early-access/session";
 import { verifyLivePatreonEntitlement } from "@/lib/early-access/entitlement";
 import { pseudonymousKey } from "@/lib/early-access/security.mjs";
-import { releaseAccessDecision } from "@/lib/early-access/release-access.mjs";
+import { issueProtectedDownload, DownloadFlowError } from "@/lib/early-access/download-flow.mjs";
 import { privateJson, sameOrigin } from "@/lib/early-access/response";
 
 export const runtime = "nodejs";
@@ -23,35 +23,34 @@ export async function POST(request) {
     if (!session) return privateJson({ error: "unauthorized" }, 401);
     const keyHash = pseudonymousKey(`download:${session.account_id}`, config.encryptionKey);
     if (!(await consumeRateLimit(db, keyHash, 10, 60))) return privateJson({ error: "rate_limited" }, 429);
-    const identity = await verifyLivePatreonEntitlement(db, config, session.account_id);
-    if (!identity.active) {
-      await audit(db, "download", "inactive", session.account_id);
-      return privateJson({ error: "access_denied" }, 403);
-    }
-    const { data: release, error } = await db.from("early_access_releases")
-      .select("id,storage_bucket,object_path,unlock_at,allowed_tier_ids,is_published")
-      .eq("id", body.releaseId).eq("is_published", true).maybeSingle();
-    if (error) throw new Error("Release lookup failed");
-    const decision = releaseAccessDecision(identity, release, config.allowedTierIds, config.bucket);
-    if (decision === "missing") return privateJson({ error: "release_not_found" }, 404);
-    if (decision === "locked") {
-      await audit(db, "download", "release_locked", session.account_id);
-      return privateJson({ error: "release_locked" }, 423);
-    }
-    if (decision === "tier_denied") {
-      await audit(db, "download", "tier_denied", session.account_id);
-      return privateJson({ error: "access_denied" }, 403);
-    }
-    const { data: signed, error: signError } = await db.storage.from(config.bucket).createSignedUrl(release.object_path, 60, { download: true });
-    if (signError || !signed?.signedUrl) throw new Error("Signing failed");
-    const { error: grantError } = await db.from("download_grants").insert({
-      account_id: session.account_id, release_id: release.id,
-      expires_at: new Date(Date.now() + 60_000).toISOString(),
+    const result = await issueProtectedDownload({
+      session, releaseId: body.releaseId, campaignId: config.campaignId,
+      allowedTierIds: config.allowedTierIds, bucket: config.bucket,
+      verifyIdentity: (accountId) => verifyLivePatreonEntitlement(db, config, accountId),
+      loadRelease: async (releaseId) => {
+        const { data, error } = await db.from("early_access_releases")
+          .select("id,storage_bucket,object_path,unlock_at,allowed_tier_ids,is_published")
+          .eq("id", releaseId).eq("is_published", true).maybeSingle();
+        if (error) throw new Error("Release lookup failed");
+        return data;
+      },
+      signUrl: async (bucket, path, expiresIn) => {
+        const { data, error } = await db.storage.from(bucket).createSignedUrl(path, expiresIn, { download: true });
+        if (error) throw new Error("Signing failed");
+        return data?.signedUrl;
+      },
+      saveGrant: async (accountId, releaseId, expiresIn) => {
+        const { error } = await db.from("download_grants").insert({
+          account_id: accountId, release_id: releaseId,
+          expires_at: new Date(Date.now() + expiresIn * 1000).toISOString(),
+        });
+        if (error) throw new Error("Grant audit failed");
+      },
+      audit: (outcome, accountId) => audit(db, "download", outcome, accountId),
     });
-    if (grantError) throw new Error("Grant audit failed");
-    await audit(db, "download", "granted", session.account_id);
-    return privateJson({ url: signed.signedUrl, expiresIn: 60 });
-  } catch {
+    return privateJson(result);
+  } catch (error) {
+    if (error instanceof DownloadFlowError) return privateJson({ error: error.code }, error.status);
     return privateJson({ error: "verification_unavailable" }, 503);
   }
 }
