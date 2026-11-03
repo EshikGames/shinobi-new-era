@@ -12,7 +12,10 @@ export default function SupporterAccess({ releaseId = null }) {
     fetch("/api/early-access/status", { cache: "no-store", signal: controller.signal })
       .then(async (response) => {
         const result = await response.json();
-        setAccess({ status: result.status ?? "error", loginEnabled: result.loginEnabled === true });
+        setAccess({
+          status: result.status ?? "error", loginEnabled: result.loginEnabled === true,
+          authRetry: new URLSearchParams(window.location.search).get("auth") === "restart",
+        });
       })
       .catch(() => { if (!controller.signal.aborted) setAccess({ status: "error", loginEnabled: false }); });
     return () => controller.abort();
@@ -49,6 +52,8 @@ export default function SupporterAccess({ releaseId = null }) {
 
   return <div className="ea-access">
     <AccessStatus status={access.status} />
+    {access.loginEnabled && access.status === "unauthorized" && access.authRetry &&
+      <p role="status">This sign-in link has expired or was already used. Please start a new Patreon sign-in.</p>}
     {access.loginEnabled && access.status === "unauthorized" &&
       <a className="ea-button ea-button--red" href="/api/auth/patreon/start">Sign in with Patreon</a>}
     {access.loginEnabled && ["active", "expired"].includes(access.status) &&

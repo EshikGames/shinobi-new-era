@@ -1,7 +1,7 @@
 import { getEarlyAccessConfig, stateCookieName } from "@/lib/early-access/config";
 import { createEarlyAccessDb, audit } from "@/lib/early-access/db";
 import { exchangePatreonCode, fetchPatreonIdentity } from "@/lib/early-access/patreon.mjs";
-import { completePatreonOAuth, OAuthFlowError } from "@/lib/early-access/oauth-flow.mjs";
+import { completePatreonOAuth, oauthCallbackRecoveryUrl } from "@/lib/early-access/oauth-flow.mjs";
 import { consumeOAuthState } from "@/lib/early-access/oauth-state.mjs";
 import { storePatreonAccount } from "@/lib/early-access/entitlement";
 import { createSupporterSession, setSupporterCookie } from "@/lib/early-access/session";
@@ -35,7 +35,13 @@ export async function GET(request) {
     setSupporterCookie(response, config, sessionToken);
     return response;
   } catch (error) {
-    if (error instanceof OAuthFlowError) return privateJson({ error: error.code }, 400);
+    const recoveryUrl = oauthCallbackRecoveryUrl(error, config.siteOrigin);
+    if (recoveryUrl) {
+      // Preserve existing session and any newer login attempt's state cookie.
+      // Never log the request URL, authorization code, state or cookie values.
+      console.info("Patreon callback rejected; returning to access verification", { reason: error.code });
+      return safeRedirect(recoveryUrl);
+    }
     return privateJson({ error: "verification_failed" }, 503);
   }
 }

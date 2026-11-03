@@ -1,7 +1,8 @@
 import assert from "node:assert/strict";
 import { randomBytes } from "node:crypto";
 import test from "node:test";
-import { completePatreonOAuth, OAuthFlowError } from "../lib/early-access/oauth-flow.mjs";
+import { completePatreonOAuth, OAuthFlowError, oauthCallbackRecoveryUrl } from "../lib/early-access/oauth-flow.mjs";
+import { createOAuthState, consumeOAuthState, OAUTH_STATE_TTL_SECONDS } from "../lib/early-access/oauth-state.mjs";
 import { issueProtectedDownload, DownloadFlowError } from "../lib/early-access/download-flow.mjs";
 import { verifyStoredPatreonAccount } from "../lib/early-access/entitlement-core.mjs";
 import { resolveSupporterSession } from "../lib/early-access/session-core.mjs";
@@ -232,4 +233,68 @@ test("Storage signing and grant failures never return a download URL", async () 
   const grantDown = mockDownload({ saveGrant: async () => { throw new Error("Supabase unavailable"); } });
   await assert.rejects(issueProtectedDownload(grantDown.args), /Supabase unavailable/);
   assert.equal(grantDown.calls.signed, 1);
+});
+
+test("successful callback followed by replay recovers without exchanging or creating another session", async () => {
+  const { args, calls } = mockOAuth();
+  const first = await completePatreonOAuth(args);
+  for (const cookieState of [args.cookieState, undefined]) {
+    await assert.rejects(completePatreonOAuth({ ...args, cookieState }), (error) => {
+      const target = new URL(oauthCallbackRecoveryUrl(error, "https://example.test"));
+      assert.equal(target.href, "https://example.test/early-access?auth=restart#supporters");
+      assert.equal(target.searchParams.has("code"), false);
+      assert.equal(target.searchParams.has("state"), false);
+      return true;
+    });
+  }
+  assert.deepEqual(calls, { exchanged: 1, stored: 1, sessions: 1, audited: 1 });
+  // Recovery cannot authenticate: only the independently validated cookie can.
+  const row = { account_id: first.accountId, expires_at: new Date(Date.now() + 60000).toISOString(), revoked_at: null };
+  const lookup = async (hash) => hash === tokenHash(first.sessionToken) ? row : null;
+  assert.equal((await resolveSupporterSession(first.sessionToken, lookup)).account_id, first.accountId);
+  assert.equal(await resolveSupporterSession(undefined, lookup), null);
+  assert.equal(await resolveSupporterSession(randomToken(), lookup), null);
+});
+
+test("two concurrent callbacks exchange the code once; replay cannot recover a lost session response", async () => {
+  const { args, calls } = mockOAuth();
+  const results = await Promise.allSettled([completePatreonOAuth(args), completePatreonOAuth(args)]);
+  assert.equal(results.filter((r) => r.status === "fulfilled").length, 1);
+  assert.equal(results.filter((r) => r.status === "rejected")[0].reason.code, "expired_or_reused_state");
+  assert.equal(calls.exchanged, 1);
+  assert.equal(calls.sessions, 1);
+  const failure = mockOAuth({ exchangeCode: async () => { throw new Error("provider down"); } });
+  await assert.rejects(completePatreonOAuth(failure.args), /provider down/);
+  await assert.rejects(completePatreonOAuth(failure.args), { code: "expired_or_reused_state" });
+  assert.equal(failure.calls.sessions, 0);
+});
+
+test("state lifecycle uses a shared ten-minute TTL and stores only the hash (mock database)", async () => {
+  const now = Date.parse("2026-11-03T16:16:59Z");
+  const { state, record } = createOAuthState(now);
+  assert.equal(state.length, 43);
+  assert.equal(record.state_hash, tokenHash(state));
+  assert.equal(JSON.stringify(record).includes(state), false);
+  assert.equal(Date.parse(record.expires_at) - now, OAUTH_STATE_TTL_SECONDS * 1000);
+  assert.equal(OAUTH_STATE_TTL_SECONDS, 600);
+  let clock = now;
+  let consumed = false;
+  const db = { rpc: async (name, { p_state_hash }) => {
+    assert.equal(name, "consume_supporter_oauth_state");
+    const accepted = p_state_hash === record.state_hash && !consumed && Date.parse(record.expires_at) > clock;
+    if (accepted) consumed = true;
+    return { data: accepted, error: null };
+  } };
+  assert.equal(await consumeOAuthState(db, tokenHash(randomToken())), false);
+  clock = Date.parse(record.expires_at);
+  assert.equal(await consumeOAuthState(db, record.state_hash), false);
+  clock -= 1;
+  assert.equal(await consumeOAuthState(db, record.state_hash), true);
+  assert.equal(await consumeOAuthState(db, record.state_hash), false);
+});
+
+test("recovery is limited to rejected callbacks, not infrastructure failures", () => {
+  assert.equal(oauthCallbackRecoveryUrl(new Error("database down"), "https://example.test"), null);
+  assert.equal(oauthCallbackRecoveryUrl({ code: "expired_or_reused_state" }, "https://example.test"), null);
+  assert.equal(oauthCallbackRecoveryUrl(new OAuthFlowError("unrecognized"), "https://example.test"), null);
 });
