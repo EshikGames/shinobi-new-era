@@ -1,0 +1,82 @@
+/* Early Access presentation only. All entitlement checks stay on the server. */
+.ea-lounge { background: radial-gradient(ellipse at 50% 13%, #591d2114, transparent 45%); }
+.ea-lounge .ea-room-main.shell, .ea-lounge .ea-membership-shell.shell { width: min(900px, calc(100% - 48px)); }
+.ea-lounge .ea-room-heading { text-align: left; padding: 26px 0 30px; }
+.ea-lounge .ea-back { margin-bottom: 32px; }
+.ea-lounge .ea-room-heading h1 { font-size: clamp(46px, 6vw, 68px); }
+.ea-lounge .ea-room-heading h1 > span { color: #ce4437; }
+.ea-lounge .ea-room-heading h1::after { content: ''; display: block; width: 55px; height: 3px; margin-top: 17px; background: #ce4437; }
+.ea-lounge .ea-version { padding: 0; border: 0; background: none; border-radius: 0; color: #bbb6b3; font-size: 13px; margin-top: 16px; }
+.ea-lounge .ea-launch { padding: 46px 38px; border-color: #ffffff12; background: radial-gradient(ellipse at 50% 0, #69242925, transparent 70%), #0e1017; }
+.ea-lounge .ea-launch::before { display: none; }
+.ea-lounge .ea-launch .eyebrow { color: #e16a5e; letter-spacing: .2em; font-size: 10px; }
+.ea-lounge .ea-launch h2 { font-size: clamp(28px, 3.6vw, 40px); }
+.ea-date-pending { display: flex; justify-content: center; align-items: center; gap: 10px; padding: 23px 0 27px; color: #b9a68d; font-size: 13px; }
+.ea-date-pending .sne-icon { width: 22px; height: 22px; }
+.ea-lounge .ea-launch-copy { max-width: 450px; font-size: 14px; line-height: 1.8; }
+.ea-lounge .ea-launch .button { background: #262028; border: 1px solid #ffffff1f; border-radius: 9px; color: #f5eee5; padding-inline: 24px; }
+.ea-lounge .ea-launch .button:hover { background: #3b252b; border-color: #d35d5170; }
+.ea-lounge .ea-launch .ea-countdown__unit { max-width: 155px; padding-block: 22px; background: #ffffff03; }
+.ea-lounge .ea-launch .ea-countdown__unit strong { font-size: clamp(30px, 5vw, 60px); color: #f8f2ef; }
+.ea-entry { position: relative; scroll-margin-top: 100px; margin-top: 26px; padding: 30px; border: 1px solid #ffffff12; border-radius: 18px; background: #101219; }
+.ea-anchor { position: absolute; top: 0; scroll-margin-top: 100px; }
+.ea-entry-heading { text-align: center; margin-bottom: 25px; }
+.ea-entry-heading .eyebrow { font-size: 9px; margin-bottom: 12px; }
+.ea-entry-heading h2 { font: 400 clamp(24px, 3vw, 30px)/1.25 Georgia, serif; letter-spacing: -.025em; }
+.ea-entry-heading > p:last-child { color: #a8a8b2; font-size: 13px; margin-top: 10px; }
+.ea-platform-switch { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); padding: 5px; gap: 5px; background: #080b11; border: 1px solid #ffffff0e; border-radius: 12px; }
+.ea-platform-switch button { display: flex; gap: 9px; align-items: center; justify-content: center; min-height: 54px; border: 1px solid transparent; border-radius: 8px; background: transparent; color: #a5a5b1; font-size: 13px; cursor: pointer; transition: background .15s, color .15s; }
+.ea-platform-switch button[aria-pressed="true"] { background: #2c2027; border-color: #d45e453d; color: #fff3e9; }
+.ea-platform-switch button:hover { color: #fff; background: #ffffff08; }
+.ea-platform-switch button:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+.ea-platform-switch button:disabled { cursor: wait; opacity: .6; }
+.ea-platform-switch .sne-icon { width: 25px; height: 25px; }
+.ea-lounge .ea-entry .supporter-access { background: transparent; border: 0; padding: 27px 0 8px; box-shadow: none; }
+.ea-lounge .ea-entry .manual-access { margin: 0; padding: 27px 0 8px; border: 0; }
+.ea-entry .manual-access h3 { text-align: center; font-size: 19px; margin: 0 0 10px; }
+.ea-entry .manual-access > p { font-size: 13px; color: #aaaab4; text-align: center; max-width: 470px; margin: 0 auto 14px; }
+.ea-entry .email-form { max-width: 470px; margin: 22px auto; }
+.ea-entry .email-form input { min-height: 49px; background: #090c12; }
+.ea-entry .email-form button { min-height: 48px; border-radius: 8px; }
+.ea-entry .manual-platforms { margin: 24px 0 0; gap: 12px; }
+.ea-entry .manual-platforms article { padding: 18px; background: #ffffff02; border-color: #ffffff0d; }
+.ea-entry .manual-platforms h4 { font-size: 14px; }
+.ea-entry .manual-platforms p { font-size: 12px; color: #a6a6b0; }
+.ea-entry .ea-free-link { margin-top: 15px; border-top: 1px solid #ffffff0d; padding-top: 20px; }
+.ea-lounge .membership-section { padding-top: 48px; scroll-margin-top: 100px; }
+.ea-lounge .membership-heading { text-align: left; margin-bottom: 23px; }
+.ea-lounge .membership-heading h2 { font-size: 30px; }
+.ea-lounge .membership-heading > p:last-child { max-width: none; margin: 12px 0 0; }
+.ea-lounge .membership-table { min-width: 730px; }
+.ea-lounge .membership-table th:first-child { width: 200px; }
+.ea-lounge .membership-table th, .ea-lounge .membership-table td { padding: 17px 10px; }
+.ea-lounge .membership-table thead th { padding-top: 24px; }
+.ea-lounge .membership-highlight { background: #a9453020; }
+.ea-lounge .membership-price { font-size: 24px; }
+.ea-lounge .membership-scroll-hint { display: none; }
+.ea-support-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px 18px; margin-top: 20px; font-size: 12px; color: #a6a6b0; }
+.ea-support-links a { color: #e1c49b; }
+.ea-support-links a:hover { text-decoration: underline; }
+.ea-gallery-details { border-block: 1px solid #ffffff14; padding: 23px 0; margin-top: 16px; }
+.ea-gallery-details > summary { display: flex; align-items: center; justify-content: space-between; gap: 20px; cursor: pointer; font-size: 14px; color: #e0cbae; list-style: none; }
+.ea-gallery-details > summary::-webkit-details-marker { display: none; }
+.ea-gallery-details[open] > summary > span { transform: rotate(45deg); }
+.ea-lounge .ea-gallery-details .gallery-help { padding: 25px 0 5px; }
+.ea-lounge .ea-room-faq { padding-block: 35px; }
+@media (max-width: 760px) {
+  .ea-lounge .membership-scroll-hint { display: block; }
+  .ea-lounge .membership-table th:first-child { width: 170px; }
+  .ea-lounge .membership-table { min-width: 690px; }
+}
+@media (max-width: 600px) {
+  .ea-lounge .ea-room-main.shell, .ea-lounge .ea-membership-shell.shell { width: calc(100% - 32px); }
+  .ea-lounge .ea-room-heading { padding-top: 18px; }
+  .ea-lounge .ea-launch { padding: 30px 20px; }
+  .ea-entry { padding: 22px 16px; }
+  .ea-platform-switch button { flex-direction: column; gap: 6px; padding: 9px 3px; font-size: 11px; }
+  .ea-platform-switch .sne-icon { width: 24px; height: 24px; }
+  .ea-entry .manual-platforms { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .ea-entry .manual-platforms article { padding: 13px 10px; }
+  .ea-lounge .membership-heading h2 { font-size: 27px; }
+}
+@media (prefers-reduced-motion: reduce) { .ea-platform-switch button { transition: none; } }

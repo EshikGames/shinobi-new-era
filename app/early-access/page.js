@@ -3,18 +3,16 @@ import SupporterGuide from "@/components/SupporterGuide";
 import MembershipComparison from "@/components/MembershipComparison";
 import Icon from "@/components/Icon";
 import { FaqList } from "@/components/Ui";
-import SupporterAccess from "./SupporterAccess";
-import SupporterListAccess from "./SupporterListAccess";
+import AccessPlatforms from "./AccessPlatforms";
 import Countdown from "./Countdown";
-import { earlyAccessConfig } from "./config";
-import { membershipSource } from "@/lib/supporter-tiers.mjs";
+import "./lounge.css";
 import { getReleaseCenter } from "@/lib/releases/server";
 import { metadataForPath } from "../seo";
 export const dynamic = "force-dynamic";
 export const metadata = metadataForPath(
   "/early-access",
-  "Patreon Early Access & Memberships | Shinobi New Era",
-  "Compare Eshik Games Patreon tiers, check your membership and find available Shinobi New Era Early Access builds. 14-day Early Access starts with Resonance Adept.",
+  "Early Access & Supporter Downloads | Shinobi New Era",
+  "Check your Patreon, Boosty or SubscribeStar access and find available Shinobi New Era supporter builds. 14-day Early Access starts with Resonance Adept.",
 );
 export default async function EarlyAccess() {
   const center = await getReleaseCenter();
@@ -22,39 +20,27 @@ export default async function EarlyAccess() {
   const version = featured?.version ?? center.next?.version;
   const unlockAt = featured?.early_access_at ?? center.next?.early_access_at;
   return (
-    <div className="ea-room">
+    <div className="ea-room ea-lounge">
       <div className="ea-room-main shell">
         <header className="ea-room-heading">
-          <Link className="ea-back" href="/download">← Guide & Downloads</Link>
+          <Link className="ea-back" href="/">← Back to Home</Link>
           <p className="eyebrow">SUPPORTER BUILDS</p>
-          <h1>Early <em>Access</em></h1>
-          <p>Play the next chapter early. Help bring the new era to life.</p>
+          <h1>Early Access<span aria-hidden="true">.</span></h1>
           {version && <span className="ea-version">{featured ? "Supporter version" : "In development"} · v{version.replace(/^v/i, "")}</span>}
         </header>
         <section className="ea-launch" aria-labelledby="ea-launch-title">
-          <span className="ea-launch-symbol" aria-hidden="true"><Icon name="moon" /></span>
-          <p className="eyebrow">{featured ? "SUPPORTER RELEASE" : "THE NEXT CHAPTER"}</p>
-          <h2 id="ea-launch-title">{featured ? `Shinobi New Era v${featured.version.replace(/^v/i, "")}` : "A little closer to the new era."}</h2>
-          {unlockAt ? <><p className="ea-launch-date">Release unlock: <time dateTime={unlockAt}>{new Intl.DateTimeFormat("en-US", {dateStyle:"long", timeStyle:"short", timeZone:"UTC"}).format(new Date(unlockAt))} UTC</time></p><Countdown unlockAt={unlockAt} /></> : <p className="ea-launch-date">Release date to be announced</p>}
-          <p className="ea-launch-copy"><strong>Resonance Adept, Otsutsuki Chosen and New Era Architect</strong> include 14-day Early Access to future updates. Sign in below to check your active membership and available builds.</p>
-          {!featured && <p className="ea-launch-note">Full v0.4 with Act III is in development. Act III is not included in the public Beta.</p>}
-          <a className="button button-primary" href={membershipSource} target="_blank" rel="noopener noreferrer"><Icon name="patreon" />Explore Patreon tiers ↗</a>
+          <p className="eyebrow">{featured ? "SUPPORTER RELEASE" : "THE NEXT CHAPTER"}{version && ` · v${version.replace(/^v/i, "")}`}</p>
+          <h2 id="ea-launch-title">{featured ? "Your next chapter awaits." : "A new chapter is on its way."}</h2>
+          {unlockAt ? <><p className="ea-launch-date">Unlocks <time dateTime={unlockAt}>{new Intl.DateTimeFormat("en-US", {dateStyle:"long", timeStyle:"short", timeZone:"UTC"}).format(new Date(unlockAt))} UTC</time></p><Countdown unlockAt={unlockAt} /></> : <div className="ea-date-pending"><Icon name="moon" /><span>Release date to be announced</span></div>}
+          <p className="ea-launch-copy">Get <strong>14-day Early Access</strong> with Resonance Adept, Otsutsuki Chosen or New Era Architect.</p>
+          {!featured && <p className="ea-launch-note">Full v0.4 with Act III is in development.</p>}
+          <a className="button button-primary" href="#membership">Get Early Access <span aria-hidden="true">↗</span></a>
         </section>
-        <section className="ea-signin" aria-labelledby="ea-signin-title">
-          <div className="ea-signin-heading"><p className="eyebrow">YOUR MEMBERSHIP</p><h2 id="ea-signin-title">Check your access</h2><p>Use Patreon sign-in, or choose Boosty or SubscribeStar and enter your supporter email below.</p></div>
-          <nav className="ea-provider-links" aria-label="Supporter platforms">
-            <a href="#patreon-access" className="ea-provider-current"><Icon name="patreon" /><span>Patreon<small>Website sign-in</small></span></a>
-            {earlyAccessConfig.supporters.filter(platform => platform.name !== "Patreon").map(platform => <a href="#manual-access-title" key={platform.name}><Icon name={platform.icon} /><span>{platform.name}<small>Email access</small></span></a>)}
-          </nav>
-          <div id="patreon-access"><SupporterAccess releases={center.early} availability={center.availability} /></div>
-          <p className="ea-provider-note">Patreon uses official OAuth. Boosty and SubscribeStar email access uses the list maintained by Eshik Games.</p>
-          <SupporterListAccess releases={center.early} />
-          <Link className="ea-free-link" href="/download">Looking for the free public version? Download it here →</Link>
-        </section>
+        <AccessPlatforms releases={center.early} availability={center.availability} />
       </div>
-      <div className="shell ea-membership-shell"><MembershipComparison /></div>
+      <div className="shell ea-membership-shell"><MembershipComparison compact /></div>
       <div className="ea-room-main shell">
-        <SupporterGuide />
+        <details className="ea-gallery-details"><summary>Already a supporter? Unlock the in-game gallery <span aria-hidden="true">＋</span></summary><SupporterGuide /></details>
         <section className="section ea-room-faq">
           <p className="eyebrow">GOOD TO KNOW</p><h2>Early Access questions</h2>
           <FaqList items={[

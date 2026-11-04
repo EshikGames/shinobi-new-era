@@ -14,10 +14,11 @@ async function call(action, body) {
     invalid_email: 'Please enter a valid email address.', release_locked: 'This build has not unlocked yet.', release_not_found: 'No published build is available.' })[data.error] ?? 'Access checking is unavailable. Please try again later.');
   return data;
 }
-export default function SupporterListAccess({ releases = [] }) {
+export default function SupporterListAccess({ releases = [], selectedProvider, onBusyChange, compact = false }) {
   const [access, setAccess] = useState({ status: 'loading', enabled: false });
   const [email, setEmail] = useState(''), [notice, setNotice] = useState(''), [busy, setBusy] = useState(false), [clock, setClock] = useState(0);
-  const [provider, setProvider] = useState('boosty');
+  const [chosenProvider, setProvider] = useState('boosty');
+  const provider = selectedProvider ?? chosenProvider;
   useEffect(() => { const controller = new AbortController();
     const refresh = () => fetch('/api/early-access/list/status', { cache: 'no-store', signal: controller.signal }).then(async r => {
       if (!r.ok) throw new Error(); const data = await r.json(); if (!controller.signal.aborted) setAccess(data);
@@ -27,11 +28,11 @@ export default function SupporterListAccess({ releases = [] }) {
     const statusTimer = setInterval(refresh, 60000);
     return () => { controller.abort(); clearInterval(timer); clearInterval(statusTimer); };
   }, []);
-  async function run(task) { setBusy(true); setNotice(''); try { await task(); } catch (error) { setNotice(error.message); } finally { setBusy(false); } }
-  return <section className="manual-access" aria-labelledby="manual-access-title">
-    <p className="eyebrow">BOOSTY & SUBSCRIBESTAR</p><h3 id="manual-access-title">Access with your supporter email</h3>
-    <p>Enter the email added to the Eshik Games supporter list. No email code or confirmation link is required.</p>
-    <p>Eligible memberships: Resonance Adept, Otsutsuki Chosen and New Era Architect. Access requires an active entry on an enabled platform.</p>
+  async function run(task) { setBusy(true); onBusyChange?.(true); setNotice(''); try { await task(); } catch (error) { setNotice(error.message); } finally { setBusy(false); onBusyChange?.(false); } }
+  return <section className="manual-access" aria-labelledby={compact ? 'ea-email-title' : 'manual-access-title'}>
+    {!compact && <p className="eyebrow">BOOSTY & SUBSCRIBESTAR</p>}<h3 id={compact ? 'ea-email-title' : 'manual-access-title'}>{compact ? `Continue with ${provider === 'boosty' ? 'Boosty' : 'SubscribeStar'}` : 'Access with your supporter email'}</h3>
+    <p>Use the email on the Eshik Games supporter list. No code or confirmation link is required.</p>
+    {!compact && <p>Eligible memberships: Resonance Adept, Otsutsuki Chosen and New Era Architect. Access requires an active entry on an enabled platform.</p>}
     {access.testMode && <p className="notice" role="status">Boosty test mode. Only test entries can sign in. No downloads or supporter privileges are granted.</p>}
     {access.status === 'loading' && <p role="status">Checking availability…</p>}
     {['active', 'test_active'].includes(access.status) ? <div className="panel manual-session"><h4>{access.testMode ? 'Test session is active' : 'Early Access is available'}</h4><p>Your email matches an active entry. This does not verify who owns the email.</p>
@@ -40,7 +41,7 @@ export default function SupporterListAccess({ releases = [] }) {
         <dt>Session until</dt><dd>{access.sessionExpiresAt ? new Date(access.sessionExpiresAt).toLocaleString() : 'Unavailable'}</dd></dl>
       <button className="button button-secondary" disabled={busy} onClick={() => run(async () => { await call('logout', {}); setAccess({ enabled: true, status: 'unauthorized', testMode: access.testMode }); })}>Logout</button></div>
       : <form className="email-form" onSubmit={e => { e.preventDefault(); run(async () => { const result = await call('start', { email, provider }); setAccess({ enabled: true, ...result }); setEmail(''); }); }}>
-        <label>Supporter platform<select value={provider} onChange={e => setProvider(e.target.value)} disabled={busy || !access.enabled}><option value="boosty">Boosty</option>{!access.testMode && <option value="subscribestar">SubscribeStar</option>}</select></label>
+        {!selectedProvider && <label>Supporter platform<select value={provider} onChange={e => setProvider(e.target.value)} disabled={busy || !access.enabled}><option value="boosty">Boosty</option>{!access.testMode && <option value="subscribestar">SubscribeStar</option>}</select></label>}
         <label>Supporter email<input type="email" required maxLength={254} autoComplete="email" value={email} onChange={e => setEmail(e.target.value)} disabled={busy || !access.enabled} /></label>
         <button className="button button-primary" disabled={busy || !access.enabled}>{busy ? 'Checking…' : 'Continue with Email'}</button>
       </form>}
