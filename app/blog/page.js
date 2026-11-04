@@ -1,57 +1,37 @@
 import Link from "next/link";
-import { Art, EmptyState, PageIntro } from "@/components/Ui";
 import { ReleaseDate } from "@/components/ReleaseBoard";
 import { getPosts } from "@/lib/releases/server";
 import { metadataForPath } from "../seo";
+
 export const metadata = metadataForPath(
   "/blog",
-  "Devlog | Shinobi New Era",
-  "Official development updates, confirmed release notes and behind-the-scenes posts from Eshik Games.",
+  "Blog & Devlog | Shinobi New Era",
+  "Follow Shinobi New Era development: character artwork, gameplay previews, localization and release notes from Eshik Games, with original itch.io devlogs.",
 );
+
 export default function Blog() {
   const posts = getPosts();
   return (
-    <>
-      <PageIntro
-        kicker="FROM THE STUDIO"
-        title="Updates"
-        number="06"
-      >
-        Development notes, official announcements and release changelogs from
-        Eshik Games.
-      </PageIntro>
-      <section className="shell section">
-        {posts.length ? (
-          <div className="blog-grid">
-            {posts.map((post) => (
-              <Link
-                className="blog-card panel"
-                href={`/blog/${post.slug}`}
-                key={post.slug}
-              >
-                <Art src={post.cover ?? "/images/hero.jpg"} alt={post.title} />
-                <div>
-                  <span className="eyebrow">{post.category}</span>
-                  <h2>{post.title}</h2>
-                  <p>{post.summary}</p>
-                  <ReleaseDate value={post.date} />
-                  <span className="text-link">Read the update ↗</span>
-                </div>
-              </Link>
-            ))}
-          </div>
-        ) : (
-          <EmptyState title="The journal is waiting for its first post.">
-            Confirmed announcements and dated release notes will appear here. In
-            the meantime, find the current version in Downloads.
-          </EmptyState>
-        )}
-        <div className="section-end">
-          <Link href="/download" className="button button-secondary">
-            View downloads ↗
-          </Link>
-        </div>
+    <div className="journal-shell">
+      <header className="journal-heading">
+        <p className="eyebrow">DEVELOPMENT JOURNAL</p>
+        <h1>Blog</h1>
+        <p>Behind the scenes of Shinobi New Era. New artwork, development progress and release notes, straight from Eshik Games.</p>
+        <a className="text-link" href="https://eshik-games.itch.io/shinobi-new-era/devlog" target="_blank" rel="noopener noreferrer">Follow the devlog on itch.io ↗</a>
+      </header>
+      <section aria-label="Development posts" className="journal-feed">
+        {posts.map((post) => (
+          <article className="journal-card" key={post.slug}>
+            <Link href={`/blog/${post.slug}`} className="journal-card-link">
+              <div className="journal-meta"><ReleaseDate value={post.date} /><span>{post.category}</span></div>
+              <h2>{post.title}</h2>
+              <p>{post.summary}</p>
+              <span className="journal-read">Read more <span aria-hidden="true">→</span></span>
+            </Link>
+          </article>
+        ))}
       </section>
-    </>
+      <div className="journal-bottom"><span>Looking for the game?</span><Link href="/download" className="text-link">Guide & Downloads →</Link></div>
+    </div>
   );
 }

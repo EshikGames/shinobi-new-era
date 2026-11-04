@@ -9,7 +9,7 @@ export default function Footer() {
         <div className="simple-footer-top">
           <Link href="/" className="footer-brand">SHINOBI <span>NEW ERA</span><small>© {new Date().getFullYear()} Eshik Games · 18+</small></Link>
           <nav aria-label="Footer navigation">
-            {[["/about", "About"], ["/download", "Downloads"], ["/play", "Play online"], ["/early-access", "Early Access"], ["/characters", "Characters"], ["/gallery", "Gallery"], ["/blog", "Updates"], ["/faq", "Help"]].map(([href, label]) => <Link key={href} href={href}>{label}</Link>)}
+            {[["/about", "About"], ["/download", "Downloads"], ["/play", "Play online"], ["/early-access", "Early Access"], ["/characters", "Characters"], ["/gallery", "Gallery"], ["/blog", "Blog"], ["/faq", "Help"]].map(([href, label]) => <Link key={href} href={href}>{label}</Link>)}
           </nav>
         </div>
         <div className="simple-footer-social">

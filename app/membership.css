@@ -1,0 +1,133 @@
+/* Membership presentation only. Access decisions remain in the server API. */
+.ea-room { padding-bottom: 56px; background: radial-gradient(ellipse 65% 25% at 50% 14%, #712c2012, transparent); }
+.ea-room-main.shell { width: min(850px, calc(100% - 48px)); }
+.ea-room-heading { text-align: center; padding: 28px 0 34px; }
+.ea-back { display: block; width: fit-content; margin-bottom: 36px; font-size: 12px; color: var(--muted); }
+.ea-back:hover, .ea-bottom-back:hover { color: var(--gold); }
+.ea-room-heading .eyebrow { font-size: 10px; letter-spacing: .22em; margin-bottom: 18px; }
+.ea-room-heading h1 { font: 400 clamp(46px, 6vw, 72px)/1.1 Georgia, serif; letter-spacing: -.045em; }
+.ea-room-heading > p:not(.eyebrow) { margin-top: 19px; color: var(--muted); font-size: 14px; }
+.ea-version { display: inline-block; font-size: 11px; color: #d8c5a8; border: 1px solid #d8b57b25; border-radius: 30px; padding: 7px 14px; margin-top: 20px; background: #d8b57b07; }
+.ea-launch { position: relative; overflow: hidden; isolation: isolate; text-align: center; padding: 38px 44px; border: 1px solid #d8b57b29; border-radius: 18px; background: radial-gradient(ellipse at 50% 0, #7b35213b, transparent 65%), #101115; }
+.ea-launch::before { content: ""; position: absolute; inset: 0; z-index: -1; opacity: .07; background: linear-gradient(0deg, #101115, transparent), url('/images/hero.jpg') center/cover; pointer-events: none; }
+.ea-launch-symbol { display: flex; justify-content: center; margin-bottom: 20px; color: #d8b57b; }
+.ea-launch-symbol .sne-icon { width: 30px; height: 30px; }
+.ea-launch .eyebrow { font-size: 9px; margin-bottom: 16px; }
+.ea-launch h2 { font: 400 clamp(27px, 3.4vw, 39px)/1.2 Georgia, serif; letter-spacing: -.035em; }
+.ea-launch-date { margin: 14px auto 24px; color: #d4b98f; font-size: 12px; }
+.ea-launch-copy { font-size: 13px; color: #b1b0b0; line-height: 1.9; max-width: 570px; margin: 0 auto; }
+.ea-launch-copy strong { color: #e0d4c1; font-weight: 500; }
+.ea-launch-note { font-size: 11px; color: #8d929a; margin: 13px auto 0; max-width: 490px; }
+.ea-launch .button { margin-top: 24px; min-height: 46px; font-size: 12px; gap: 10px; }
+.ea-launch .button .sne-icon { width: 25px; height: 25px; }
+.ea-launch .ea-countdown { display: flex; gap: 14px; justify-content: center; margin: 20px 0 28px; }
+.ea-launch .ea-countdown__unit { flex: 1; max-width: 120px; padding: 18px 8px; border: 1px solid #ffffff14; border-radius: 10px; background: #ffffff04; }
+.ea-launch .ea-countdown__unit strong { display: block; font-size: 34px; line-height: 1.2; color: #ead6b2; }
+.ea-launch .ea-countdown__unit span { display: block; font-size: 9px; text-transform: uppercase; letter-spacing: .1em; margin-top: 9px; color: var(--muted); }
+.ea-signin { margin-top: 36px; }
+.ea-signin-heading { text-align: center; margin-bottom: 24px; }
+.ea-signin-heading .eyebrow { font-size: 9px; margin-bottom: 12px; }
+.ea-signin-heading h2 { font: 400 29px/1.2 Georgia, serif; letter-spacing: -.025em; }
+.ea-signin-heading > p:last-child { margin-top: 12px; font-size: 12px; color: var(--muted); }
+.ea-provider-links { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 12px; }
+.ea-provider-links a { display: flex; justify-content: center; align-items: center; gap: 11px; padding: 14px 12px; border: 1px solid #ffffff14; border-radius: 10px; background: #111318; font-size: 13px; }
+.ea-provider-links a:hover { border-color: #d8b57b80; }
+.ea-provider-links .ea-provider-current { border-color: #d8b57b60; background: #32251d5c; }
+.ea-provider-links .sne-icon { width: 32px; height: 32px; }
+.ea-provider-links small { display: block; margin-top: 4px; font-size: 9px; color: var(--muted); }
+#patreon-access { scroll-margin-top: 100px; }
+.ea-room .supporter-access { background: #101216; border-color: #ffffff14; padding: 26px; }
+.ea-room .supporter-pass { flex-direction: column; gap: 22px; text-align: center; }
+.ea-room .supporter-pass .eyebrow { font-size: 9px; }
+.ea-room .ea-status { justify-content: center; }
+.ea-room .ea-status strong { font-size: 17px; }
+.ea-room .ea-status p { font-size: 12px; max-width: 530px; }
+.ea-room .tier-name { margin-left: 0; }
+.ea-room .supporter-pass > .button-row:empty { display: none; }
+.ea-room .private-release-list { margin-top: 24px; padding-top: 22px; }
+.ea-room .empty-state { padding: 22px; background: #ffffff02; border-radius: 10px; gap: 18px; }
+.ea-room .empty-state h3 { font-size: 16px; letter-spacing: -.02em; }
+.ea-room .empty-state p { font-size: 12px; }
+.ea-room .empty-mark { width: 32px; height: 32px; font-size: 17px; }
+.ea-provider-note { margin: 14px auto; max-width: 550px; color: #92969e; text-align: center; font-size: 10px; }
+.ea-free-link { display: block; text-align: center; font-size: 12px; color: var(--gold); padding: 12px 0; }
+.ea-free-link:hover { text-decoration: underline; }
+.ea-membership-shell.shell { width: min(1180px, calc(100% - 48px)); }
+.membership-section { padding-block: 70px 30px; }
+.membership-heading { text-align: center; margin-bottom: 32px; }
+.membership-heading .eyebrow { font-size: 10px; margin-bottom: 18px; }
+.membership-heading h2 { font: 400 clamp(32px, 3.5vw, 44px)/1.2 Georgia, serif; letter-spacing: -.035em; }
+.membership-heading > p:last-child { margin: 18px auto 0; max-width: 560px; font-size: 13px; color: var(--muted); }
+.membership-table-scroll { border: 1px solid #ffffff18; border-radius: 14px; overflow-x: auto; scrollbar-color: #9e7952 #101216; }
+.membership-table-scroll:focus-visible { outline: 2px solid var(--gold); outline-offset: 4px; }
+.membership-table { width: 100%; min-width: 950px; border-collapse: collapse; background: #101216; table-layout: fixed; }
+.membership-table th, .membership-table td { border-bottom: 1px solid #ffffff0d; padding: 18px 12px; text-align: center; vertical-align: middle; font-size: 12px; }
+.membership-table th:first-child { width: 220px; text-align: left; padding-left: 22px; font-weight: 500; color: #d6d6d8; }
+.membership-table th small { display: block; margin-top: 6px; font-size: 10px; color: #8f949e; font-weight: 400; line-height: 1.6; }
+.membership-table thead th { padding-block: 28px 22px; vertical-align: bottom; position: relative; }
+.membership-tier-title { display: block; font-size: 12px; font-weight: 500; line-height: 1.5; }
+a.membership-tier-title:hover { color: var(--gold); }
+.membership-price { display: block; margin-top: 14px; font: 24px/1.3 Georgia, serif; color: #e3d5bd; }
+.membership-price small { font-family: Arial, sans-serif; margin-top: 2px !important; font-size: 9px !important; }
+.membership-highlight { background: #b7863920; }
+.membership-pick { display: inline-block; border: 1px solid #d8b57b40; color: #dbc099; border-radius: 20px; font: 7px/1.5 Arial, sans-serif; letter-spacing: .08em; padding: 4px 6px; margin-bottom: 12px; }
+.membership-yes { color: #d5b985; font-size: 17px; }
+.membership-no { color: #676f7b; }
+.membership-days { color: #e8c58f; font-size: 12px; font-weight: 500; }
+.membership-table tfoot a { color: var(--gold); font-size: 10px; }
+.membership-table tfoot a:hover { text-decoration: underline; }
+.membership-table tfoot th, .membership-table tfoot td { border: 0; }
+.membership-source { font-size: 10px; color: #8f959f; margin: 16px 0 0; line-height: 1.8; }
+.membership-source a { color: #cdb48e; text-decoration: underline; text-underline-offset: 3px; }
+.membership-note { margin-top: 22px; padding: 18px 22px; border-left: 2px solid #c8a16a77; background: #d8b57b05; font-size: 12px; color: #9da2ab; line-height: 1.8; }
+.membership-note strong { color: #d8c5a8; font-weight: 500; }
+.membership-scroll-hint { display: none; color: #ad9676; font-size: 10px; margin-bottom: 12px; }
+.membership-details { margin-top: 22px; border-block: 1px solid #ffffff12; padding-block: 20px; }
+.membership-details summary { cursor: pointer; font-size: 12px; color: #d4c1a1; line-height: 1.7; }
+.membership-details-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; margin-top: 26px; }
+.membership-details h3 { font-size: 15px; font-weight: 500; letter-spacing: -.02em; }
+.membership-details ul { padding-left: 17px; margin: 14px 0; }
+.membership-details li { font-size: 12px; color: var(--muted); line-height: 1.8; margin: 7px 0; }
+.membership-details article > p { font-size: 11px; color: #bba689; }
+.ea-room .gallery-help { padding-block: 48px; }
+.ea-room .gallery-help h2, .ea-room-faq h2 { font: 400 30px/1.2 Georgia, serif; letter-spacing: -.03em; }
+.ea-room .gallery-help > p, .ea-room .simple-steps li, .ea-room .simple-details p { font-size: 13px; }
+.ea-room .simple-details summary { font-size: 13px; font-weight: 500; }
+.ea-room-faq { padding-block: 42px; }
+.ea-room-faq > .eyebrow { font-size: 9px; margin-bottom: 16px; }
+.ea-room-faq .faq-list { margin-top: 28px; }
+.ea-room-faq summary { font-size: 13px; }
+.ea-room-faq .faq-number { display: none; }
+.ea-room-faq .faq-list details > p { margin-left: 0; padding-left: 0; font-size: 12px; }
+.ea-bottom-back { display: block; text-align: center; font-size: 12px; color: var(--muted); padding-block: 20px; }
+@media (max-width: 1050px) { .membership-scroll-hint { display: block; } }
+@media (max-width: 650px) {
+  .ea-room-heading { padding-top: 10px; padding-bottom: 28px; }
+  .ea-back { margin-bottom: 30px; font-size: 11px; }
+  .ea-room-heading > p:not(.eyebrow) { font-size: 12px; }
+  .ea-launch { padding: 28px 20px; }
+  .ea-launch-copy { font-size: 12px; }
+  .ea-launch-date { font-size: 11px; }
+  .ea-launch .ea-countdown { gap: 7px; }
+  .ea-launch .ea-countdown__unit { padding: 12px 4px; }
+  .ea-launch .ea-countdown__unit strong { font-size: 26px; }
+  .ea-launch .ea-countdown__unit span { font-size: 7px; }
+  .ea-provider-links { gap: 6px; }
+  .ea-provider-links a { flex-direction: column; text-align: center; gap: 8px; padding: 12px 5px; font-size: 11px; }
+  .ea-provider-links small { font-size: 8px; }
+  .ea-provider-links .sne-icon { width: 27px; height: 27px; }
+  .ea-room .supporter-access { padding: 22px 16px; }
+  .ea-room .empty-state { padding: 17px 14px; gap: 12px; }
+  .ea-room .empty-state h3 { font-size: 14px; }
+  .ea-room .empty-state p { font-size: 11px; }
+  .ea-room .ea-status strong { font-size: 15px; }
+  .ea-room .ea-status p { font-size: 11px; }
+  .ea-room .private-release { flex-direction: column; align-items: stretch; }
+  .membership-section { padding-top: 48px; }
+  .membership-heading > p:last-child { font-size: 12px; }
+  .membership-details-grid { grid-template-columns: 1fr; gap: 22px; }
+  .membership-table th:first-child { width: 180px; }
+  .membership-table { min-width: 930px; }
+  .membership-note { padding: 15px 16px; font-size: 11px; }
+  .ea-room .gallery-help h2, .ea-room-faq h2 { font-size: 27px; }
+}

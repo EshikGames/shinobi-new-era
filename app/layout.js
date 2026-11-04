@@ -1,5 +1,7 @@
 import "./globals.css";
 import "./cinematic.css";
+import "./membership.css";
+import "./journal.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import {

@@ -1,6 +1,5 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { Art } from "@/components/Ui";
 import { ReleaseDate } from "@/components/ReleaseBoard";
 import { getPosts } from "@/lib/releases/server";
 import { metadataForPath, siteUrl } from "../../seo";
@@ -26,10 +25,11 @@ export default async function Post({ params }) {
     datePublished: post.date,
     author: { "@type": "Organization", name: "Eshik Games" },
     mainEntityOfPage: new URL(`/blog/${post.slug}`, siteUrl).href,
+    ...(post.source ? { isBasedOn: post.source } : {}),
     image: new URL(post.cover ?? "/images/hero.jpg", siteUrl).href,
   };
   return (
-    <article className="shell section article-page">
+    <article className="journal-shell journal-article">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
@@ -37,32 +37,31 @@ export default async function Post({ params }) {
         }}
       />
       <Link href="/blog" className="text-link">
-        ← Back to the journal
+        ← Back to Blog
       </Link>
-      <p className="eyebrow">{post.category}</p>
-      <h1>{post.title}</h1>
-      <ReleaseDate value={post.date} />
-      <Art src={post.cover ?? "/images/hero.jpg"} alt={post.title} />
-      <p className="article-lead">{post.summary}</p>
+      <header className="journal-article-heading">
+        <p className="eyebrow">{post.category}</p>
+        <h1>{post.title}</h1>
+        <div className="journal-meta"><ReleaseDate value={post.date} /><span>By Eshik Games</span></div>
+        <p className="journal-lead">{post.summary}</p>
+      </header>
       {post.source && (
-        <p className="source-note">
-          Summary of an official Eshik Games update.{" "}
+        <p className="journal-source">
+          Adapted from our official devlog.{" "}
           <a href={post.source} target="_blank" rel="noopener noreferrer">
             Read the original on itch.io ↗
           </a>
         </p>
       )}
       {post.sections.map((section) => (
-        <section key={section.heading}>
+        <section className="journal-article-section" key={section.heading}>
           <h2>{section.heading}</h2>
           {section.paragraphs.map((paragraph, index) => (
             <p key={index}>{paragraph}</p>
           ))}
         </section>
       ))}
-      <Link href="/download" className="button button-primary">
-        Visit the Release Center ↗
-      </Link>
+      <footer className="journal-bottom"><Link href="/blog" className="text-link">← All posts</Link><Link href="/download" className="text-link">Current downloads →</Link></footer>
     </article>
   );
 }

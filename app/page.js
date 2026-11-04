@@ -82,7 +82,7 @@ export default async function Home() {
         <Icon name="chat" /><p className="eyebrow">JOIN THE COMMUNITY</p><h2>The next chapter starts <em>together.</em></h2>
         <p>Talk about the game, share feedback and follow the latest news from Eshik Games.</p>
         <a className="button button-primary" href={community.find(item => item.name === "Discord").href} target="_blank" rel="noopener noreferrer">Join Discord ↗</a>
-        <Link className="text-link" href="/blog">Read development updates →</Link>
+        <Link className="text-link" href="/blog">Read the blog →</Link>
       </section>
     </div>
   );

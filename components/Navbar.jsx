@@ -5,9 +5,8 @@ import { useRef, useState } from "react";
 const links = [
   ["/", "Home"],
   ["/play", "Play"],
-  ["/download", "Downloads"],
-  ["/early-access", "Early Access"],
-  ["/blog", "Updates"],
+  ["/download", "Guide & Downloads"],
+  ["/blog", "Blog"],
 ];
 export default function Navbar() {
   const pathname = usePathname();

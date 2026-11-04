@@ -10,7 +10,7 @@ import { metadataForPath } from "../seo";
 export const dynamic = "force-dynamic";
 export const metadata = metadataForPath(
   "/download",
-  "Downloads | Shinobi New Era",
+  "Guide & Downloads | Shinobi New Era",
   "Find public downloads, upcoming releases, changelogs, previous versions and installation help for Shinobi New Era.",
 );
 function DownloadCards({ release }) {
@@ -67,12 +67,17 @@ export default async function Downloads() {
   const center = await getReleaseCenter();
   return (
     <>
-      <PageIntro kicker="FREE PUBLIC VERSION" title="Download Shinobi New Era">
-        Choose your platform. All current download buttons open the official itch.io page.
+      <PageIntro kicker="GET STARTED" title="Guide & Downloads">
+        Download the free public version, check Early Access or find installation help.
       </PageIntro>
       <div className="shell">
         <section className="section download-main" id="latest">
           <SectionTitle title={center.current ? `Current version · ${center.current.version}` : "No public release announced"} />
+          <Link className="guide-early-access" href="/early-access">
+            <span><strong>Patreon Early Access</strong><small>Check your membership and available early builds.</small></span>
+            <span className="guide-early-access-label">For supporters <span aria-hidden="true">→</span></span>
+          </Link>
+          <p className="guide-download-note">Choose your platform. All current download buttons open the official itch.io page.</p>
           {center.current && <DownloadCards release={center.current} />}
           <p className="notice">{publicBetaNote}</p>
           <div className="simple-links"><Link href="/play">Play the older browser edition →</Link><a href="#guide">Installation help →</a><a href="#previous">Older versions →</a></div>
