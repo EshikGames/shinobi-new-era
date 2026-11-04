@@ -41,15 +41,13 @@ export default async function EarlyAccess() {
           <a className="button button-primary" href={membershipSource} target="_blank" rel="noopener noreferrer"><Icon name="patreon" />Explore Patreon tiers ↗</a>
         </section>
         <section className="ea-signin" aria-labelledby="ea-signin-title">
-          <div className="ea-signin-heading"><p className="eyebrow">YOUR MEMBERSHIP</p><h2 id="ea-signin-title">Check your access</h2><p>Use Patreon sign-in, or enter your Boosty supporter email below.</p></div>
+          <div className="ea-signin-heading"><p className="eyebrow">YOUR MEMBERSHIP</p><h2 id="ea-signin-title">Check your access</h2><p>Use Patreon sign-in, or choose Boosty or SubscribeStar and enter your supporter email below.</p></div>
           <nav className="ea-provider-links" aria-label="Supporter platforms">
             <a href="#patreon-access" className="ea-provider-current"><Icon name="patreon" /><span>Patreon<small>Website sign-in</small></span></a>
-            {earlyAccessConfig.supporters.filter(platform => platform.name !== "Patreon").map(platform => platform.name === 'Boosty'
-              ? <a href="#manual-access-title" key={platform.name}><Icon name={platform.icon} /><span>{platform.name}<small>Email access</small></span></a>
-              : <a href={platform.href} key={platform.name} target="_blank" rel="noopener noreferrer"><Icon name={platform.icon} /><span>{platform.name}<small>Creator page ↗</small></span></a>)}
+            {earlyAccessConfig.supporters.filter(platform => platform.name !== "Patreon").map(platform => <a href="#manual-access-title" key={platform.name}><Icon name={platform.icon} /><span>{platform.name}<small>Email access</small></span></a>)}
           </nav>
           <div id="patreon-access"><SupporterAccess releases={center.early} availability={center.availability} /></div>
-          <p className="ea-provider-note">Patreon uses official OAuth. Boosty email access uses the list maintained by Eshik Games. SubscribeStar website access is not enabled.</p>
+          <p className="ea-provider-note">Patreon uses official OAuth. Boosty and SubscribeStar email access uses the list maintained by Eshik Games.</p>
           <SupporterListAccess releases={center.early} />
           <Link className="ea-free-link" href="/download">Looking for the free public version? Download it here →</Link>
         </section>

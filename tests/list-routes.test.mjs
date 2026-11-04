@@ -189,7 +189,7 @@ test('MOCK email-only: a stranger knowing the listed email gets access by the ex
 test('MOCK list route: exact provider binding rejects cross-provider lookup, forged provider and tampered session', async () => {
   listFixture();
   for (const provider of [undefined, 'patreon', 'unknown']) assert.equal((await supporterListHandler('start', request({ email: user.email, provider }))).status, 400);
-  assert.equal((await supporterListHandler('start', request({ email: user.email, provider: 'subscribestar' }))).status, 400);
+  assert.equal((await supporterListHandler('start', request({ email: user.email, provider: 'subscribestar' }))).status, 403);
   const cookies = await listLogin();
   assert.equal((await supporterListHandler('download', request({ releaseId: id, provider: 'subscribestar' }, cookies))).status, 403);
   rows.ea_list_sessions[0].provider = 'subscribestar';
@@ -301,4 +301,29 @@ test('MOCK release contains no email admin or OTP routes; list login never calls
   assert.ok(!calls.includes('verifyOtp'));
   assert.ok(!calls.some(c => typeof c === 'object' && 'send' in c));
   assert.equal(rows.ea_email_sessions?.length ?? 0, 0);
+});
+
+test('MOCK SubscribeStar: own eligible list entry creates a bound session; policy/status/tier/expiry remain mandatory', async () => {
+  for (const scenario of ['allowed', 'policy-disabled', 'missing-permission', 'expired', 'wrong-tier', 'inactive', 'test-entry']) {
+    listFixture(); const entry = rows.ea_supporter_list[0];
+    Object.assign(entry, { provider: 'subscribestar', is_test: false, expires_at: future() });
+    if (scenario === 'policy-disabled') entry.provider_policy.enabled = false;
+    if (scenario === 'missing-permission') entry.provider_policy.approval_reference = null;
+    if (scenario === 'expired') entry.expires_at = '2000-01-01T00:00:00Z';
+    if (scenario === 'wrong-tier') entry.subscription_tier = 'Karma Bearer';
+    if (scenario === 'inactive') entry.status = 'inactive';
+    if (scenario === 'test-entry') entry.is_test = true;
+    const response = await supporterListHandler('start', request({ email: user.email, provider: 'subscribestar', status: 'active', subscription_tier: 'Resonance Adept' }));
+    assert.equal(response.status, scenario === 'allowed' ? 200 : 403, scenario);
+    if (scenario !== 'allowed') { assert.equal(rows.ea_list_sessions?.length ?? 0, 0); continue; }
+    const cookies = { '__Host-sne_supporter_list': cookie(response, '__Host-sne_supporter_list') };
+    const status = await (await supporterListHandler('status', request({}, cookies, undefined, 'GET'))).json();
+    assert.equal(status.provider, 'subscribestar'); assert.equal(status.status, 'active'); assert.equal(status.email, undefined);
+    assert.equal((await supporterListHandler('download', request({ releaseId: id, provider: 'boosty' }, cookies))).status, 403);
+    rows.early_access_releases = [];
+    assert.equal((await supporterListHandler('download', request({ releaseId: id }, cookies))).status, 404);
+    assert.ok(!calls.includes('sign:60'));
+    assert.equal((await supporterListHandler('logout', request({}, cookies))).status, 200);
+    assert.equal((await supporterListHandler('download', request({ releaseId: id }, cookies))).status, 401);
+  }
 });
