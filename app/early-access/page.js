@@ -4,6 +4,7 @@ import MembershipComparison from "@/components/MembershipComparison";
 import Icon from "@/components/Icon";
 import { FaqList } from "@/components/Ui";
 import SupporterAccess from "./SupporterAccess";
+import SupporterListAccess from "./SupporterListAccess";
 import Countdown from "./Countdown";
 import { earlyAccessConfig } from "./config";
 import { membershipSource } from "@/lib/supporter-tiers.mjs";
@@ -40,13 +41,16 @@ export default async function EarlyAccess() {
           <a className="button button-primary" href={membershipSource} target="_blank" rel="noopener noreferrer"><Icon name="patreon" />Explore Patreon tiers ↗</a>
         </section>
         <section className="ea-signin" aria-labelledby="ea-signin-title">
-          <div className="ea-signin-heading"><p className="eyebrow">YOUR MEMBERSHIP</p><h2 id="ea-signin-title">Check your access</h2><p>Use the Patreon account connected to your subscription.</p></div>
+          <div className="ea-signin-heading"><p className="eyebrow">YOUR MEMBERSHIP</p><h2 id="ea-signin-title">Check your access</h2><p>Use Patreon sign-in, or enter your Boosty supporter email below.</p></div>
           <nav className="ea-provider-links" aria-label="Supporter platforms">
             <a href="#patreon-access" className="ea-provider-current"><Icon name="patreon" /><span>Patreon<small>Website sign-in</small></span></a>
-            {earlyAccessConfig.supporters.filter(platform => platform.name !== "Patreon").map(platform => <a href={platform.href} key={platform.name} target="_blank" rel="noopener noreferrer"><Icon name={platform.icon} /><span>{platform.name}<small>Creator page ↗</small></span></a>)}
+            {earlyAccessConfig.supporters.filter(platform => platform.name !== "Patreon").map(platform => platform.name === 'Boosty'
+              ? <a href="#manual-access-title" key={platform.name}><Icon name={platform.icon} /><span>{platform.name}<small>Email access</small></span></a>
+              : <a href={platform.href} key={platform.name} target="_blank" rel="noopener noreferrer"><Icon name={platform.icon} /><span>{platform.name}<small>Creator page ↗</small></span></a>)}
           </nav>
           <div id="patreon-access"><SupporterAccess releases={center.early} availability={center.availability} /></div>
-          <p className="ea-provider-note">Website verification is available through Patreon only. SubscribeStar and Boosty open the official creator pages.</p>
+          <p className="ea-provider-note">Patreon uses official OAuth. Boosty email access uses the list maintained by Eshik Games. SubscribeStar website access is not enabled.</p>
+          <SupporterListAccess releases={center.early} />
           <Link className="ea-free-link" href="/download">Looking for the free public version? Download it here →</Link>
         </section>
       </div>
@@ -56,7 +60,7 @@ export default async function EarlyAccess() {
         <section className="section ea-room-faq">
           <p className="eyebrow">GOOD TO KNOW</p><h2>Early Access questions</h2>
           <FaqList items={[
-            { question: "Which tier do I need for Early Access on this website?", answer: "An active Resonance Adept, Otsutsuki Chosen or New Era Architect membership. These tiers list 14-day Early Access on Patreon. Village Ally and Karma Bearer do not qualify for this website’s Early Access downloads." },
+            { question: "How do I get Early Access on this website?", answer: "Patreon sign-in requires an active Resonance Adept, Otsutsuki Chosen or New Era Architect membership. Email access uses a separate list maintained by Eshik Games: the entered email must have an active, unexpired entry with one of these tiers on an enabled platform. Every download also requires a published, unlocked build." },
             { question: "Why is there no download after I sign in?", answer: "Your subscription and release availability are checked separately. A build must be published and unlocked for your tier before a download can be issued. Signing in does not make an unpublished build available." },
             { question: "Does website sign-in unlock the gallery in the game?", answer: "No. Gallery Unlocker is included from Resonance Adept upward, but the game uses its own email-based supporter check. Follow the instructions above." },
             { question: "When will full v0.4 be released?", answer: "Full v0.4 with Act III is in development. No release date has been announced. A countdown appears only when a real unlock date has been set." },

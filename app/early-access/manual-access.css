@@ -1,0 +1,25 @@
+.manual-access { margin-top: 2rem; padding-top: 2rem; border-top: 1px solid #ffffff20; }
+.manual-access h3 { font-size: clamp(1.35rem, 3vw, 1.9rem); margin: .5rem 0 1rem; }
+.manual-access p, .email-form p { line-height: 1.7; }
+.manual-platforms { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; margin: 1.5rem 0; }
+.manual-platforms article { padding: 1.4rem; display: flex; flex-direction: column; align-items: flex-start; gap: .8rem; }
+.manual-platforms h4 { display: flex; align-items: center; gap: .7rem; font-size: 1.15rem; }
+.manual-platforms h4 svg, .manual-platforms h4 img { width: 28px; height: 28px; }
+.manual-platforms .badge { white-space: normal; }
+.manual-platforms button { margin-top: auto; }
+.email-form { display: grid; gap: 1rem; margin: 1rem 0; }
+.email-form form { display: grid; gap: .8rem; }
+.email-form label, .ea-admin label { display: grid; gap: .4rem; font-size: .9rem; }
+.email-form input, .email-form select, .ea-admin input, .ea-admin select { width: 100%; min-width: 0; padding: .8rem; border: 1px solid #ffffff30; border-radius: 8px; color: #f4eeee; background: #141217; }
+.manual-session dl { display: grid; grid-template-columns: auto 1fr; gap: .5rem 1rem; margin: 1rem 0; }
+.manual-session dd { margin: 0; }
+.email-form input:focus-visible, .ea-admin input:focus-visible, .ea-admin select:focus-visible { outline: 2px solid #d7b773; outline-offset: 2px; }
+.manual-session { padding: 1.4rem; overflow-wrap: anywhere; }
+.manual-access button:disabled, .ea-admin button:disabled { opacity: .45; cursor: not-allowed; }
+.ea-admin { max-width: 1000px; padding-top: 7rem; padding-bottom: 4rem; }
+.ea-admin > h1 { font-size: 2rem; margin-bottom: 1rem; }
+.ea-admin article { padding: 1.4rem; margin: 1rem 0; overflow-wrap: anywhere; }
+.ea-admin form { display: grid; gap: .8rem; margin: 1rem 0; }
+.ea-admin details { padding: 1rem 0; }
+.ea-admin summary { cursor: pointer; }
+@media (max-width: 600px) { .manual-platforms { grid-template-columns: 1fr; } .manual-platforms .button, .email-form .button { width: 100%; } }
