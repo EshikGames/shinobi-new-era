@@ -1,0 +1,51 @@
+/* This immersive shell exists only while /play is mounted. */
+body:has(.play-screen) { overflow: hidden; background: #050609; }
+body:has(.play-screen) > .site-header,
+body:has(.play-screen) > .site-footer { display: none; }
+body:has(.play-screen) > main { padding: 0; margin: 0; }
+.play-screen { position: fixed; inset: 0; height: 100dvh; display: grid; grid-template-rows: minmax(0, 1fr) auto; background: #050609; z-index: 30; }
+.play-screen:fullscreen { width: 100vw; height: 100dvh; }
+.play-screen .game-player { width: 100%; height: 100%; min-height: 0; aspect-ratio: auto; border: 0; border-radius: 0; overflow: hidden; background: #000; }
+/* Give the legacy engine a stable canvas, then fit the entire frame without cropping. */
+.play-screen .game-player iframe { width: 1280px; height: 720px; left: 50%; top: 50%; right: auto; bottom: auto; transform: translate(-50%, -50%) scale(var(--game-scale, 0)); transform-origin: center; }
+.play-screen .game-launcher { background: #080a0e; }
+.play-screen .game-launcher > img { opacity: .42; }
+.play-screen .launcher-copy h2 { font: 400 clamp(29px, 4vw, 54px)/1.15 Georgia, serif; }
+.play-screen .launcher-copy p:not(.eyebrow) { font-size: 13px; max-width: 430px; margin-inline: auto; }
+.play-screen .launcher-copy .button { border-radius: 8px; }
+.play-dock { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 16px; min-height: 62px; padding: 8px max(18px, env(safe-area-inset-right)) calc(8px + env(safe-area-inset-bottom)) max(18px, env(safe-area-inset-left)); background: #0c0e13; border-top: 1px solid #ffffff14; }
+.play-dock nav, .play-dock-tools { display: flex; align-items: center; gap: 16px; }
+.play-dock a, .play-dock button, .play-dock-nav > span { display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-height: 38px; font-size: 11px; color: #a9aab5; white-space: nowrap; text-decoration: none; }
+.play-dock button { border: 0; background: transparent; cursor: pointer; padding: 0; }
+.play-dock a:hover, .play-dock button:hover { color: #f3dfbf; }
+.play-dock a:focus-visible, .play-dock button:focus-visible { outline: 2px solid #d9ae72; outline-offset: 3px; border-radius: 4px; }
+.play-dock .sne-icon { width: 22px; height: 22px; }
+.play-dock-nav > span { color: #f5e0bb; position: relative; }
+.play-dock-nav > span::after { content: ''; position: absolute; bottom: 0; left: 30%; right: 30%; height: 2px; background: #c94437; }
+.play-dock-tools { justify-content: flex-end; }
+.play-dock-tools button[aria-label="Toggle fullscreen"] > span:first-child { font-size: 24px; }
+.play-help-dialog { position: fixed; inset: 0; margin: auto; width: min(480px, calc(100% - 32px)); max-height: calc(100dvh - 40px); overflow: auto; color: #f1e9df; background: #12151d; border: 1px solid #ffffff20; border-radius: 16px; padding: 26px; }
+.play-help-dialog::backdrop { background: #000b; backdrop-filter: blur(7px); }
+.play-help-heading { display: flex; align-items: center; justify-content: space-between; gap: 18px; }
+.play-help-heading h2 { font: 400 26px/1.2 Georgia, serif; }
+.play-help-heading button { flex-shrink: 0; border: 0; color: #fff; background: #ffffff08; border-radius: 50%; width: 36px; height: 36px; cursor: pointer; font-size: 25px; }
+.play-help-dialog h3 { margin-top: 24px; font-size: 15px; }
+.play-help-dialog p { margin-top: 12px; font-size: 13px; color: #aaaebb; line-height: 1.8; }
+.play-help-actions { display: flex; flex-wrap: wrap; gap: 16px; margin-top: 26px; }
+.play-help-actions a, .play-help-actions button { color: #dfbd8a; font-size: 12px; }
+.play-help-actions button { background: none; border: 0; cursor: pointer; }
+.play-toast { position: absolute; bottom: 80px; left: 50%; transform: translateX(-50%); width: min(500px, calc(100% - 32px)); padding: 16px; border: 1px solid #d6ad6e50; border-radius: 9px; background: #151820ee; color: #ead8bb; font-size: 13px; }
+@media (max-width: 1150px) { .play-dock-support a > span { display: none; } .play-dock-support { gap: 12px !important; } .play-dock { gap: 12px; } }
+@media (max-width: 700px) {
+  .play-dock { grid-template-columns: auto 1fr; gap: 0 12px; padding-inline: max(12px, env(safe-area-inset-left)); }
+  .play-dock .play-dock-nav { grid-column: 1 / -1; grid-row: 1; justify-content: center; gap: 23px; border-bottom: 1px solid #ffffff09; margin-bottom: 5px; }
+  .play-dock a, .play-dock button, .play-dock-nav > span { min-height: 40px; }
+  .play-dock-tools { gap: 13px; }
+  .play-dock-tools a > span, .play-dock-tools button[aria-label="Toggle fullscreen"] > span:last-child { display: none; }
+  .play-toast { bottom: 115px; }
+}
+@media (max-height: 500px) and (orientation: landscape) {
+  .play-dock { grid-template-columns: auto 1fr auto; padding-block: 3px; min-height: 44px; }
+  .play-dock .play-dock-nav { grid-column: auto; grid-row: auto; border: 0; margin: 0; gap: 14px; }
+  .play-dock-tools button[aria-label="Toggle fullscreen"] > span:last-child { display: none; }
+}
