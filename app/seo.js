@@ -2,7 +2,7 @@ export const siteUrl = "https://shinobinewera.com/";
 export const siteTitle = "Shinobi New Era | Official Site";
 export const siteName = "Shinobi New Era";
 export const siteDescription =
-  "Shinobi New Era is an open-world visual novel inspired by the Naruto/Boruto universe. Explore Konoha, build relationships, complete quests, and experience an evolving story.";
+  "An 18+ open-world visual novel by Eshik Games. Follow Boruto’s search for Naruto and Sasuke and the mystery of Karma in an alternate Naruto/Boruto-inspired story.";
 
 export function metadataForPath(
   path,

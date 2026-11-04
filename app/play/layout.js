@@ -3,7 +3,7 @@ import { metadataForPath } from "../seo";
 export const metadata = metadataForPath(
   "/play",
   "Play Online | Shinobi New Era",
-  "Launch the official Shinobi New Era browser edition, use fullscreen and find help with loading the game.",
+  "Play the older Shinobi New Era v0.2b browser edition. Find current public Beta downloads separately in the Release Center.",
 );
 
 export default function PlayLayout({ children }) {

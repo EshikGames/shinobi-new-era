@@ -3,12 +3,11 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useRef, useState } from "react";
 const links = [
-  ["/", "Home"],
-  ["/about", "The game"],
-  ["/characters", "Characters"],
+  ["/about", "About"],
   ["/download", "Downloads"],
   ["/early-access", "Early Access"],
-  ["/blog", "Devlog"],
+  ["/characters", "Characters"],
+  ["/faq", "Help"],
 ];
 export default function Navbar() {
   const pathname = usePathname();
@@ -31,7 +30,6 @@ export default function Navbar() {
             <strong>
               SHINOBI <b>NEW ERA</b>
             </strong>
-            <small>AN ESHIK GAMES VISUAL NOVEL</small>
           </span>
         </Link>
         <nav className="desktop-nav" aria-label="Main navigation">
@@ -73,10 +71,11 @@ export default function Navbar() {
           aria-label="Mobile navigation"
         >
           {[
+            ["/", "Home"],
             ...links,
             ["/play", "Play online"],
             ["/gallery", "Gallery"],
-            ["/faq", "FAQ"],
+            ["/blog", "Updates"],
           ].map(([href, label]) => (
             <Link
               key={href}

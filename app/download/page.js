@@ -1,16 +1,16 @@
 import Link from "next/link";
 import { EmptyState, PageIntro, SectionTitle } from "@/components/Ui";
-import ReleaseBoard, { ReleaseDate } from "@/components/ReleaseBoard";
+import { ReleaseDate } from "@/components/ReleaseBoard";
 import { changelogSections } from "@/lib/releases/model.mjs";
 import { getReleaseCenter } from "@/lib/releases/server";
 import { guide } from "@/lib/site-content.mjs";
 import { IconBadge } from "@/components/Icon";
-import { gameSources } from "@/lib/game-info.mjs";
+import { gameSources, publicBetaNote, publicFiles } from "@/lib/game-info.mjs";
 import { metadataForPath } from "../seo";
 export const dynamic = "force-dynamic";
 export const metadata = metadataForPath(
   "/download",
-  "Downloads & Release Center | Shinobi New Era",
+  "Downloads | Shinobi New Era",
   "Find public downloads, upcoming releases, changelogs, previous versions and installation help for Shinobi New Era.",
 );
 function DownloadCards({ release }) {
@@ -67,177 +67,50 @@ export default async function Downloads() {
   const center = await getReleaseCenter();
   return (
     <>
-      <PageIntro
-        kicker="THE RELEASE CENTER"
-        title={
-          <>
-            Your next chapter.
-            <br />
-            <em>One place to begin.</em>
-          </>
-        }
-        number="02"
-      >
-        Public builds, upcoming chapters and the details in between.
+      <PageIntro kicker="FREE PUBLIC VERSION" title="Download Shinobi New Era">
+        Choose your platform. All current download buttons open the official itch.io page.
       </PageIntro>
       <div className="shell">
-        <nav className="section-nav" aria-label="Release Center sections">
-          {[
-            ["latest", "Latest release"],
-            ["next", "Next release"],
-            ["changelog", "Changelog"],
-            ["previous", "Previous versions"],
-            ["guide", "Game guide"],
-          ].map(([id, label]) => (
-            <a key={id} href={`#${id}`}>
-              {label}
-            </a>
-          ))}
-        </nav>
-        <section className="section" id="latest">
-          <SectionTitle
-            kicker="LATEST PUBLIC RELEASE"
-            title={
-              center.current
-                ? `Shinobi New Era ${center.current.version}`
-                : "No public release announced"
-            }
-          />
-          <ReleaseBoard center={center} />
-          {center.current && (
-            <>
-              <div className="release-note">
-                <span className="badge badge-gold">
-                  OFFICIAL ITCH.IO RELEASE
-                </span>
-                <p>
-                  Choose your file on the official itch.io page: PC archive, Mac
-                  archive or Android APK. Current files are labelled
-                  0.4beta.fix. These buttons open the game page, not a direct
-                  file download.{" "}
-                  <a href="#previous" className="text-link">
-                    Older v0.2b downloads ↗
-                  </a>
-                </p>
-              </div>
-              <DownloadCards release={center.current} />
-            </>
-          )}
-        </section>
-        <section className="section next-release-callout panel" id="next">
-          <div>
-            <p className="eyebrow">
-              NEXT RELEASE / {center.next?.version ?? "TBA"}
-            </p>
-            <h2>
-              A new chapter
-              <br />
-              <em>on the horizon.</em>
-            </h2>
-            <p>
-              {center.next?.description ??
-                "No next release has been announced."}
-            </p>
-            <p>
-              <ReleaseDate value={center.next?.public_release_at} /> · Early
-              Access timing not announced
-            </p>
-          </div>
-          <Link href="/early-access" className="button button-primary">
-            Check Early Access ↗
-          </Link>
-        </section>
-        <section className="section" id="changelog">
-          <SectionTitle kicker="WHAT HAS CHANGED" title="Full changelog." />
-          <p className="source-note">
-            Public-beta notes, based on the{" "}
-            <a
-              href={gameSources.beta}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              19 October announcement
-            </a>
-            . The separate v0.4 development report is available in the{" "}
-            <Link href="/blog/v04-development-progress">journal</Link>.
-          </p>
-          {changelogSections.map((category) => (
-            <details className="changelog-category" key={category}>
-              <summary>
-                {category}
-                <span aria-hidden="true">＋</span>
-              </summary>
-              {center.current?.changelog?.[category]?.length ? (
-                <ul>
-                  {center.current.changelog[category].map((entry) => (
-                    <li key={entry}>{entry}</li>
-                  ))}
-                </ul>
-              ) : (
-                <p>
-                  No confirmed {category.toLowerCase()} notes have been
-                  published for {center.current?.version ?? "this release"}.
-                </p>
-              )}
-            </details>
-          ))}
-        </section>
-        <section className="section" id="previous">
-          <SectionTitle kicker="THE ARCHIVE" title="Previous versions." />
-          {center.previous.length ? (
-            center.previous.map((release, index) => (
-              <details
-                className="archive-release"
-                key={release.version}
-                open={index === 0}
-              >
-                <summary>
-                  <span className="mono">PUBLIC ARCHIVE</span>
-                  <strong>{release.version}</strong>
-                  <span>
-                    <ReleaseDate
-                      value={release.public_release_at}
-                      fallback="Original website links"
-                    />
-                  </span>
-                  <b aria-hidden="true">＋</b>
-                </summary>
-                <div className="archive-body">
-                  <p>{release.description}</p>
-                  <DownloadCards release={release} />
-                  <p className="muted">
-                    Historical changelog and publication date have not been
-                    supplied.
-                  </p>
-                </div>
-              </details>
-            ))
-          ) : (
-            <EmptyState title="No previous versions listed">
-              Archives will appear when confirmed links are available.
-            </EmptyState>
-          )}
+        <section className="section download-main" id="latest">
+          <SectionTitle title={center.current ? `Current version · ${center.current.version}` : "No public release announced"} />
+          {center.current && <DownloadCards release={center.current} />}
+          <p className="notice">{publicBetaNote}</p>
+          <div className="simple-links"><Link href="/play">Play the older browser edition →</Link><a href="#guide">Installation help →</a><a href="#previous">Older versions →</a></div>
+          <details className="simple-details">
+            <summary>Which file should I choose on itch.io?</summary>
+            <ul className="public-file-list">{publicFiles.map((file) => <li key={file.name}><strong>{file.platforms}</strong> — {file.name} · {file.size}</li>)}</ul>
+            <p>Windows and Linux use the PC archive. These are the 0.4beta.fix files listed on itch.io.</p>
+          </details>
         </section>
         <section className="section" id="guide">
-          <SectionTitle kicker="GET YOUR BEARINGS" title="The field guide.">
-            Practical starting points. Version-specific mechanics will be
-            documented as they are confirmed.
-          </SectionTitle>
-          <div className="guide-grid">
-            {guide.map((entry) => (
-              <article className="panel guide-card" key={entry.title}>
-                <IconBadge name={entry.icon} small />
-                <h3>{entry.title}</h3>
-                <p>{entry.text}</p>
-              </article>
-            ))}
+          <SectionTitle title="Installation & help" />
+          <div className="guide-grid simple-guide">
+            {guide.slice(0, 3).map((entry) => <article className="panel guide-card" key={entry.title}><IconBadge name={entry.icon} small /><h3>{entry.title}</h3><p>{entry.text}</p></article>)}
           </div>
-          <p className="guide-support">
-            Need more help?{" "}
-            <Link className="text-link" href="/faq">
-              Read the FAQ ↗
-            </Link>
-          </p>
+          <p className="guide-support">Need help? <Link className="text-link" href="/faq">Read the FAQ →</Link></p>
+        </section>
+        <section className="section simple-update-section" id="next">
+          <SectionTitle title={center.next ? `Next update · v${center.next.version}` : "Next update"} />
+          <p>Full v0.4, including Act III, is in development. <ReleaseDate value={center.next?.public_release_at} />.</p>
+          <div className="simple-links"><Link href="/blog/v04-development-progress">Development progress →</Link><Link href="/early-access">Check Early Access →</Link></div>
+          <p id="supporter-builds" className="muted">{center.availability === "error" ? "Early Access availability could not be checked. Please try again later." : center.early.length ? "Published supporter builds are available on the Early Access page, subject to your membership and each release’s unlock date." : "No Early Access build is currently listed on this website."}</p>
+        </section>
+        <section className="section" id="changelog">
+          <SectionTitle title="Release notes & older versions" />
+          <details className="simple-details">
+            <summary>What changed in the public Beta?</summary>
+            <p>Based on the <a href={gameSources.beta} target="_blank" rel="noopener noreferrer">official Beta announcement</a>.</p>
+            {changelogSections.filter((category) => center.current?.changelog?.[category]?.length).map((category) => <div className="simple-changelog" key={category}><h3>{category}</h3><ul>{center.current.changelog[category].map((entry) => <li key={entry}>{entry}</li>)}</ul></div>)}
+          </details>
+          <div id="previous">
+            {center.previous.length ? center.previous.map((release) => (
+              <details className="simple-details" key={release.version}>
+                <summary>Older version · {release.version}</summary>
+                <p>{release.description}</p>
+                <DownloadCards release={release} />
+              </details>
+            )) : <EmptyState title="No older versions listed">Confirmed archive links will appear here.</EmptyState>}
+          </div>
         </section>
       </div>
     </>

@@ -14,13 +14,7 @@ export default function Blog() {
     <>
       <PageIntro
         kicker="FROM THE STUDIO"
-        title={
-          <>
-            Every chapter
-            <br />
-            <em>has a story.</em>
-          </>
-        }
+        title="Updates"
         number="06"
       >
         Development notes, official announcements and release changelogs from
@@ -49,12 +43,12 @@ export default function Blog() {
         ) : (
           <EmptyState title="The journal is waiting for its first post.">
             Confirmed announcements and dated release notes will appear here. In
-            the meantime, find the current version in the Release Center.
+            the meantime, find the current version in Downloads.
           </EmptyState>
         )}
         <div className="section-end">
           <Link href="/download" className="button button-secondary">
-            Open Release Center ↗
+            View downloads ↗
           </Link>
         </div>
       </section>

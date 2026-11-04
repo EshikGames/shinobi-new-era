@@ -22,7 +22,7 @@ export function SectionTitle({
   return (
     <div className="section-heading">
       <div>
-        <p className="eyebrow">{kicker}</p>
+        {kicker && <p className="eyebrow">{kicker}</p>}
         <h2>{title}</h2>
         {children && <p className="section-intro">{children}</p>}
       </div>
@@ -34,17 +34,14 @@ export function SectionTitle({
     </div>
   );
 }
-export function PageIntro({ kicker, title, children, number = "SNE" }) {
+export function PageIntro({ kicker, title, children }) {
   return (
     <header className="page-intro shell">
       <div>
-        <p className="eyebrow">{kicker}</p>
+        {kicker && <p className="eyebrow">{kicker}</p>}
         <h1>{title}</h1>
         {children && <p>{children}</p>}
       </div>
-      <span className="intro-index" aria-hidden="true">
-        {number}
-      </span>
     </header>
   );
 }

@@ -26,13 +26,7 @@ export default function Faq() {
       />
       <PageIntro
         kicker="A LITTLE GUIDANCE"
-        title={
-          <>
-            Before your
-            <br />
-            <em>first chapter.</em>
-          </>
-        }
+        title="Help & FAQ"
         number="FAQ"
       >
         Downloads, access and getting started. Find your answer here.

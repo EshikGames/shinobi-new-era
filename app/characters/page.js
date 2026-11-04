@@ -11,21 +11,16 @@ export default function Characters() {
     <>
       <PageIntro
         kicker="THE PEOPLE OF SHINOBI NEW ERA"
-        title={
-          <>
-            Familiar faces.
-            <br />
-            <em>Stories to discover.</em>
-          </>
-        }
+        title="Characters"
         number="04"
       >
-        Explore the cast through the original SNE character portraits.
+        Meet the people in Boruto’s story. These descriptions follow the SNE
+        alternate universe; relationships should not be assumed from the original series.
       </PageIntro>
       <section className="shell section">
         <CharacterCards />
         <div className="section-end">
-          <p>The best way to get to know them? Step into the story.</p>
+          <p>Kakashi’s further missions and Ino’s Act III storyline are in development. All characters involved in adult romantic content are adults in this alternate universe.</p>
           <Button href="/play">Play online</Button>
         </div>
       </section>

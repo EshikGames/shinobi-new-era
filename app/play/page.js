@@ -2,6 +2,7 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { browserEdition } from "@/lib/game-info.mjs";
 import { PageIntro } from "@/components/Ui";
 export default function Play() {
   const [state, setState] = useState("idle");
@@ -72,19 +73,14 @@ export default function Play() {
     <>
       <PageIntro
         kicker="PLAY ONLINE"
-        title={
-          <>
-            The world is
-            <br />
-            <em>one click away.</em>
-          </>
-        }
+        title="Play in browser"
         number="PLAY"
       >
-        Launch the existing browser edition. Give the game a moment to load,
-        then make yourself at home.
+        Play the older browser edition, v{browserEdition.version}. It is not
+        the current public Beta or the full v0.4 in development.
       </PageIntro>
       <section className="shell section play-section">
+        <p className="notice">Browser archive: v{browserEdition.version}. For the current 0.4beta.fix download, visit <Link href="/download">Downloads</Link>. Browser saves and features can differ.</p>
         <div ref={player} className="game-player">
           {["loading", "ready"].includes(state) && (
             <iframe
@@ -177,7 +173,7 @@ export default function Play() {
             <h3>Find your platform.</h3>
             <p>
               A downloadable edition can be a better fit for your device. Check
-              the Release Center for version-labelled links.
+              Downloads for version-labelled links.
             </p>
           </article>
         </div>

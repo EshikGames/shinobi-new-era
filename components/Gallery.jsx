@@ -17,9 +17,12 @@ export default function Gallery() {
     setSelected(null);
     opener.current?.focus();
   }
+  const visibleIndices = gallery.flatMap((entry, index) =>
+    category === "All" || entry.category === category ? [index] : []
+  );
   function step(direction) {
     setSelected(
-      (value) => (value + direction + gallery.length) % gallery.length,
+      (value) => visibleIndices[(visibleIndices.indexOf(value) + direction + visibleIndices.length) % visibleIndices.length],
     );
   }
   const item = selected === null ? null : gallery[selected];
@@ -36,6 +39,7 @@ export default function Gallery() {
           </button>
         ))}
       </div>
+      <p className="source-note" aria-live="polite">Showing {visibleIndices.length} of {gallery.length} public images.</p>
       <div className="gallery-grid">
         {gallery.map((entry, index) =>
           category === "All" || entry.category === category ? (
@@ -95,7 +99,7 @@ export default function Gallery() {
           <div className="lightbox-controls">
             <button onClick={() => step(-1)}>← Previous</button>
             <span aria-live="polite">
-              {selected === null ? 0 : selected + 1} / {gallery.length}
+              {selected === null ? 0 : visibleIndices.indexOf(selected) + 1} / {visibleIndices.length}
             </span>
             <button onClick={() => step(1)}>Next →</button>
           </div>

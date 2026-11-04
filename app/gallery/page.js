@@ -1,3 +1,4 @@
+import { gallery } from "@/lib/site-content.mjs";
 import Gallery from "@/components/Gallery";
 import { PageIntro } from "@/components/Ui";
 import { metadataForPath } from "../seo";
@@ -11,16 +12,11 @@ export default function GalleryPage() {
     <>
       <PageIntro
         kicker="THE WORLD, IN FRAMES"
-        title={
-          <>
-            A glimpse of
-            <br />
-            <em>the new era.</em>
-          </>
-        }
+        title="Artwork gallery"
         number="05"
       >
-        Original public SNE artwork. Select a frame to take a closer look.
+        Public SNE artwork: {gallery.length} images to explore. Select a frame to take a closer look.
+        This website gallery is separate from the supporter gallery inside the game.
       </PageIntro>
       <section className="shell section">
         <Gallery />
