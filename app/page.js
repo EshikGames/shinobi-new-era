@@ -3,6 +3,8 @@ import { Art, Button, FaqList, SectionTitle } from "@/components/Ui";
 import CharacterCards from "@/components/CharacterCards";
 import ReleaseBoard from "@/components/ReleaseBoard";
 import MotionScene from "@/components/MotionScene";
+import { IconBadge } from "@/components/Icon";
+import { gameOverview } from "@/lib/game-info.mjs";
 import { community, faqs, features } from "@/lib/site-content.mjs";
 import { getReleaseCenter, getPosts } from "@/lib/releases/server";
 import { metadataForPath } from "./seo";
@@ -111,11 +113,7 @@ export default async function Home() {
             A familiar world.
             <br />A story of <em>your own.</em>
           </h2>
-          <p>
-            Step into an independent visual novel inspired by the world of
-            Naruto and Boruto. Explore Konoha, get to know its people and find
-            your way through an evolving story.
-          </p>
+          <p>{gameOverview}</p>
           <p>
             From everyday encounters to quests that pull you further into the
             world, your next chapter is waiting.
@@ -130,7 +128,10 @@ export default async function Home() {
         <div className="feature-grid">
           {features.map((f) => (
             <article className="feature-card panel" key={f.number}>
-              <span className="feature-index">{f.number}</span>
+              <div className="feature-top">
+                <IconBadge name={f.icon} />
+                <span className="feature-index">{f.number}</span>
+              </div>
               <p className="eyebrow">{f.tag}</p>
               <h3>{f.title}</h3>
               <p>{f.text}</p>
@@ -175,7 +176,7 @@ export default async function Home() {
           Follow the project, meet other players, or support Eshik Games.
         </SectionTitle>
         <div className="community-grid">
-          {community.map((item, i) => (
+          {community.map((item) => (
             <a
               href={item.href}
               target="_blank"
@@ -183,7 +184,7 @@ export default async function Home() {
               className="community-card panel"
               key={item.name}
             >
-              <span className="mono">0{i + 1}</span>
+              <IconBadge name={item.icon} small />
               <h3>
                 {item.name}
                 <span aria-hidden="true">↗</span>

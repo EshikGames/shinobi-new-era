@@ -657,7 +657,7 @@ button.button:disabled {
 }
 .feature-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 20px;
 }
 .feature-card {
@@ -2103,6 +2103,209 @@ summary::-webkit-details-marker {
     aspect-ratio: 1.35;
   }
 }
+.icon-badge.icon-badge-platform {
+  width: 82px;
+  height: 82px;
+  overflow: hidden;
+  color: #f0e8dc;
+  border: 0;
+  border-radius: 16px;
+  background: #090b0f;
+  box-shadow: none;
+}
+.icon-badge-platform .platform-image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.icon-badge-platform .platform-glyph {
+  width: 38px;
+  height: 38px;
+}
+.icon-badge-platform.icon-badge-small {
+  width: 48px;
+  height: 48px;
+  border-radius: 10px;
+}
+.icon-badge-platform.icon-badge-small .platform-image {
+  width: 100%;
+  height: 100%;
+}
+.footer-bottom .platform-image {
+  width: 30px;
+  height: 30px;
+  border-radius: 6px;
+}
+.support-platform > .icon-badge {
+  margin-bottom: 26px;
+}
+.footer-bottom a:has(.sne-icon) {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.footer-bottom .sne-icon {
+  width: 17px;
+  height: 17px;
+}
+.sne-icon {
+  width: 30px;
+  height: 30px;
+  flex: none;
+  display: block;
+}
+.icon-accent {
+  stroke: var(--red);
+}
+.icon-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 66px;
+  height: 66px;
+  flex: none;
+  color: var(--gold);
+  border: 1px solid #d8b57b40;
+  border-radius: 18px 4px 18px 4px;
+  background:
+    radial-gradient(circle at 15% 0%, #d8b57b1a, transparent 75%), #11151b;
+  box-shadow:
+    inset 0 0 0 5px #090b0f65,
+    0 8px 24px #0002;
+}
+.icon-badge-small {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px 3px 12px 3px;
+}
+.icon-badge-small .sne-icon {
+  width: 24px;
+  height: 24px;
+}
+.feature-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 28px;
+}
+.feature-top .feature-index {
+  margin: 0;
+  font-size: 2.5rem;
+}
+.download-card > .icon-badge,
+.guide-card > .icon-badge,
+.community-card > .icon-badge {
+  margin-bottom: 22px;
+}
+.game-facts {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+}
+.game-fact {
+  padding: 22px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.game-fact .eyebrow {
+  display: block;
+  margin-bottom: 8px;
+}
+.game-fact strong {
+  font-size: 0.9rem;
+  line-height: 1.5;
+  display: block;
+}
+.source-note {
+  color: var(--muted);
+  font-size: 0.85rem;
+  line-height: 1.8;
+  margin: 24px 0;
+}
+.source-note a {
+  color: var(--gold);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.language-panel {
+  padding: 42px;
+  margin-top: 70px;
+}
+.language-panel > div > .icon-badge {
+  margin-bottom: 24px;
+}
+.language-panel h2 {
+  margin-bottom: 16px;
+}
+.language-panel p {
+  max-width: 620px;
+  color: var(--muted);
+}
+.language-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  list-style: none;
+  padding: 0;
+  margin: 28px 0 0;
+}
+.language-list li {
+  padding: 9px 15px;
+  border: 1px solid #d8b57b25;
+  background: #d8b57b08;
+  border-radius: 4px;
+  font-size: 0.85rem;
+}
+.prototype-panel {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 28px;
+  padding: 38px;
+  margin-top: 30px;
+}
+.prototype-panel h2 {
+  font-size: clamp(1.5rem, 3vw, 2.4rem);
+  margin: 16px 0;
+}
+.prototype-panel p {
+  color: var(--muted);
+}
+@media (min-width: 1100px) {
+  .download-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+@media (max-width: 1000px) {
+  .game-facts {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .prototype-panel {
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+  .prototype-panel .button {
+    grid-column: 2;
+    justify-self: start;
+  }
+}
+@media (max-width: 600px) {
+  .game-facts {
+    grid-template-columns: 1fr;
+  }
+  .language-panel,
+  .prototype-panel {
+    padding: 24px;
+  }
+  .prototype-panel {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+  .prototype-panel .button {
+    grid-column: 1;
+  }
+}
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -2122,3 +2325,5 @@ summary::-webkit-details-marker {
     transform: none;
   }
 }
+
+.footer-bottom .sne-icon.platform-image { width: 30px; height: 30px; }

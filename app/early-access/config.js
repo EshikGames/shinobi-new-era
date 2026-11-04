@@ -4,20 +4,20 @@ export const earlyAccessConfig = {
     {
       name: "Patreon",
       href: "https://www.patreon.com/cw/eshikgames",
-      mark: "P",
+      icon: "patreon",
       tone: "patreon",
     },
     {
       name: "SubscribeStar",
       href: "https://subscribestar.adult/eshik-games",
-      mark: "✦",
+      icon: "subscribestar",
       tone: "subscribestar",
       integrationStatus: "pending_approval",
     },
     {
       name: "Boosty",
       href: "https://boosty.to/eshikgames",
-      mark: "B",
+      icon: "boosty",
       tone: "boosty",
       integrationStatus: "under_review",
     },

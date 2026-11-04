@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { IconBadge } from "@/components/Icon";
 import { EmptyState, FaqList, PageIntro, SectionTitle } from "@/components/Ui";
 import ReleaseBoard from "@/components/ReleaseBoard";
 import SupporterAccess from "./SupporterAccess";
@@ -60,9 +61,7 @@ export default async function EarlyAccess() {
           <div className="support-platforms">
             {earlyAccessConfig.supporters.map((platform) => (
               <article className="panel support-platform" key={platform.name}>
-                <span className="platform-mark" aria-hidden="true">
-                  {platform.mark}
-                </span>
+                <IconBadge name={platform.icon} />
                 <h3>{platform.name}</h3>
                 <span className="badge badge-muted">
                   {platform.integrationStatus?.replaceAll("_", " ") ??

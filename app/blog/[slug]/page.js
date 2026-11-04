@@ -44,6 +44,14 @@ export default async function Post({ params }) {
       <ReleaseDate value={post.date} />
       <Art src={post.cover ?? "/images/hero.jpg"} alt={post.title} />
       <p className="article-lead">{post.summary}</p>
+      {post.source && (
+        <p className="source-note">
+          Summary of an official Eshik Games update.{" "}
+          <a href={post.source} target="_blank" rel="noopener noreferrer">
+            Read the original on itch.io ↗
+          </a>
+        </p>
+      )}
       {post.sections.map((section) => (
         <section key={section.heading}>
           <h2>{section.heading}</h2>

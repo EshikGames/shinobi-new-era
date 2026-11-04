@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Icon from "./Icon";
 import { community } from "@/lib/site-content.mjs";
 export default function Footer() {
   return (
@@ -63,6 +64,7 @@ export default function Footer() {
               target="_blank"
               rel="noopener noreferrer"
             >
+              <Icon name={item.icon} />
               {item.name} ↗
             </a>
           ))}

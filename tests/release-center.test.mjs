@@ -13,9 +13,14 @@ test("all release views agree on owner-confirmed versions without invented dates
   const center = releaseCenter(editorialReleases);
   assert.equal(center.current.version, "0.4beta");
   assert.equal(center.next.version, "0.4");
-  assert.equal(center.current.public_release_at, null);
+  assert.equal(center.current.public_release_at, "2026-10-18T20:51:00Z");
   assert.equal(center.next.public_release_at, null);
-  assert.deepEqual(center.current.public_download_urls, []);
+  assert.equal(center.current.public_download_urls.length, 4);
+  assert.ok(
+    center.current.public_download_urls.every(
+      (link) => link.url === "https://eshik-games.itch.io/shinobi-new-era",
+    ),
+  );
   assert.equal(center.previous[0].version, "0.2b");
   assert.deepEqual(
     center.previous[0].public_download_urls.map((item) => item.platform),
@@ -101,8 +106,16 @@ test("empty and unavailable release sources do not fabricate supporter builds", 
   assert.equal(center.availability, "error");
 });
 test("devlog is empty until a dated, confirmed publication or real changelog exists", () => {
-  assert.deepEqual(editorialPosts, []);
-  assert.deepEqual(releaseArticles(editorialReleases), []);
+  assert.ok(
+    editorialPosts.every(
+      (post) =>
+        post.source?.startsWith(
+          "https://eshik-games.itch.io/shinobi-new-era/devlog/",
+        ) && Number.isFinite(Date.parse(post.date)),
+    ),
+  );
+  assert.equal(releaseArticles(editorialReleases).length, 1);
+  assert.deepEqual(releaseArticles([]), []);
   const sample = {
     version: "test-only",
     release_type: "public",
