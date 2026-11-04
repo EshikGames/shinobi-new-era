@@ -2,6 +2,8 @@ import Link from "next/link";
 import Image from "next/image";
 import { Art, FaqList } from "@/components/Ui";
 import Icon from "@/components/Icon";
+import HomeMotion, { HeroAtmosphere } from "@/components/HomeMotion";
+import "./home-motion.css";
 import { browserEdition, gameLanguages, gameOverview } from "@/lib/game-info.mjs";
 import { community, faqs } from "@/lib/site-content.mjs";
 import { getReleaseCenter } from "@/lib/releases/server";
@@ -18,7 +20,7 @@ export default async function Home() {
   const center = await getReleaseCenter();
   const supportOrder = ["Patreon", "SubscribeStar", "Boosty", "Discord", "Itch.io"];
   return (
-    <div className="cinema-home">
+    <HomeMotion>
       <section className="cinema-hero" aria-labelledby="game-title">
         <div className="cinema-landscape"><Art src="/images/hero.jpg" alt="" eager sizes="100vw" /></div>
         <div className="cinema-cast" aria-hidden="true">
@@ -26,6 +28,7 @@ export default async function Home() {
           <Image className="cinema-hinata" src="/images/characters/hinata-art-v2.png" alt="" width={1024} height={1536} sizes="(max-width: 700px) 100vw, 50vw" fetchPriority="high" loading="eager" />
         </div>
         <div className="cinema-vignette" />
+        <HeroAtmosphere />
         <div className="shell cinema-hero-inner">
           <div className="cinema-copy">
             <p className="eyebrow">AN OPEN-WORLD VISUAL NOVEL · 18+</p>
@@ -61,29 +64,29 @@ export default async function Home() {
           <p className="cinema-art-caption"><span>THE WORLD OF SNE</span>Different stories. A new beginning.</p>
         </div>
       </section>
-      <section className="shell cinema-about section" id="about">
+      <section className="shell cinema-about section" id="about" data-home-reveal>
         <p className="eyebrow">ABOUT THE GAME</p>
         <h2>Return to a changed <em>Konoha.</em></h2>
         <p className="cinema-about-intro">{gameOverview}</p>
         <div className="cinema-feature-row">
-          <article><Icon name="compass" /><h3>Explore freely</h3><p>Visit locations and follow quests in an open world.</p></article>
-          <article><Icon name="people" /><h3>Meet the characters</h3><p>Discover the people at the heart of Boruto’s story.</p></article>
-          <article><Icon name="story" /><h3>Uncover the mystery</h3><p>Search for Naruto and Sasuke and learn about Karma.</p></article>
+          <article data-home-reveal><Icon name="compass" /><h3>Explore freely</h3><p>Visit locations and follow quests in an open world.</p></article>
+          <article data-home-reveal><Icon name="people" /><h3>Meet the characters</h3><p>Discover the people at the heart of Boruto’s story.</p></article>
+          <article data-home-reveal><Icon name="story" /><h3>Uncover the mystery</h3><p>Search for Naruto and Sasuke and learn about Karma.</p></article>
         </div>
         <div className="cinema-facts"><div><strong>14</strong><span>LANGUAGES</span></div><div><strong>4</strong><span>DOWNLOAD PLATFORMS</span></div><div><strong>18+</strong><span>MATURE AUDIENCES</span></div></div>
         <div className="cinema-explore"><Link href="/about">About the game →</Link><Link href="/characters">Characters →</Link><Link href="/gallery">Artwork →</Link></div>
       </section>
-      <section className="shell section cinema-faq" id="faq">
+      <section className="shell section cinema-faq" id="faq" data-home-reveal>
         <p className="eyebrow">YOUR QUESTIONS, ANSWERED</p><h2>Before you <em>begin.</em></h2>
         <FaqList items={[faqs[0], faqs[7], faqs[9], faqs[2], faqs[3], faqs[11]]} />
         <Link className="text-link" href="/faq">All questions & help →</Link>
       </section>
-      <section className="shell cinema-community">
+      <section className="shell cinema-community" data-home-reveal>
         <Icon name="chat" /><p className="eyebrow">JOIN THE COMMUNITY</p><h2>The next chapter starts <em>together.</em></h2>
         <p>Talk about the game, share feedback and follow the latest news from Eshik Games.</p>
         <a className="button button-primary" href={community.find(item => item.name === "Discord").href} target="_blank" rel="noopener noreferrer">Join Discord ↗</a>
         <Link className="text-link" href="/blog">Read the blog →</Link>
       </section>
-    </div>
+    </HomeMotion>
   );
 }
