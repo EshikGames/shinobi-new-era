@@ -3,11 +3,11 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useRef, useState } from "react";
 const links = [
-  ["/about", "About"],
+  ["/", "Home"],
+  ["/play", "Play"],
   ["/download", "Downloads"],
   ["/early-access", "Early Access"],
-  ["/characters", "Characters"],
-  ["/faq", "Help"],
+  ["/blog", "Updates"],
 ];
 export default function Navbar() {
   const pathname = usePathname();
@@ -22,7 +22,7 @@ export default function Navbar() {
   return (
     <header className="site-header" onKeyDown={escape}>
       <div className="header-inner shell">
-        <Link href="/" className="brand" onClick={() => setOpen(false)}>
+        <Link href="/" className="brand" aria-label="Shinobi New Era — Home" onClick={() => setOpen(false)}>
           <span className="brand-symbol" aria-hidden="true">
             S<span>N</span>E
           </span>
@@ -71,11 +71,11 @@ export default function Navbar() {
           aria-label="Mobile navigation"
         >
           {[
-            ["/", "Home"],
             ...links,
-            ["/play", "Play online"],
+            ["/about", "About the game"],
+            ["/characters", "Characters"],
             ["/gallery", "Gallery"],
-            ["/blog", "Updates"],
+            ["/faq", "Help"],
           ].map(([href, label]) => (
             <Link
               key={href}
