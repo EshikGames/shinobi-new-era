@@ -1,42 +1,57 @@
-"use client";
-
-import { useState } from "react";
-
+import { FaqList, PageIntro } from "@/components/Ui";
+import { community, faqs } from "@/lib/site-content.mjs";
+import { metadataForPath } from "../seo";
+export const metadata = metadataForPath(
+  "/faq",
+  "FAQ & Help | Shinobi New Era",
+  "Answers about Shinobi New Era downloads, browser play, Patreon verification, upcoming versions and official support.",
+);
 export default function Faq() {
-  const [openFaq, setOpenFaq] = useState(null);
-
-  const faqs = [
-    { q: "What is Shinobi New Era?", a: "An RPG visual novel with a branching storyline where your decisions change the fate of the world." },
-    { q: "Is the game free?", a: "Yes. The current public build is v0.2b. Supporters receive new versions earlier." },
-    { q: "Which platforms are supported?", a: "PC (Windows, Mac, Linux), Android, and directly in your browser." },
-    { q: "When will v0.3 be public?", a: "v0.3 is available now for supporters on Boosty, Patreon, and SubscribeStar. The public release arrives in one week." },
-  ];
-
+  const structured = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqs.map((item) => ({
+      "@type": "Question",
+      name: item.question,
+      acceptedAnswer: { "@type": "Answer", text: item.answer },
+    })),
+  };
   return (
-    <section className="mx-auto max-w-3xl px-6 py-24">
-      <div className="mb-12 text-center">
-        <p className="mb-4 text-sm font-medium uppercase tracking-[0.3em] text-red-400/70">
-          Questions
-        </p>
-        <h2 className="text-4xl font-black md:text-5xl">Frequently Asked Questions</h2>
-      </div>
-
-      <div className="space-y-3">
-        {faqs.map((item, i) => (
-          <div key={i} className="overflow-hidden rounded-2xl border border-white/10 bg-white/5">
-            <button
-              onClick={() => setOpenFaq(openFaq === i ? null : i)}
-              className="flex w-full items-center justify-between px-6 py-5 text-left"
-            >
-              <span className="font-medium text-white/90">{item.q}</span>
-              <span className={`text-white/40 transition-transform ${openFaq === i ? "rotate-45" : ""}`}>
-                +
-              </span>
-            </button>
-            {openFaq === i && <p className="px-6 pb-5 text-white/50">{item.a}</p>}
-          </div>
-        ))}
-      </div>
-    </section>
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(structured).replace(/</g, "\\u003c"),
+        }}
+      />
+      <PageIntro
+        kicker="A LITTLE GUIDANCE"
+        title={
+          <>
+            Before your
+            <br />
+            <em>first chapter.</em>
+          </>
+        }
+        number="FAQ"
+      >
+        Downloads, access and getting started. Find your answer here.
+      </PageIntro>
+      <section className="shell section narrow">
+        <FaqList items={faqs} />
+        <div className="help-callout panel">
+          <h2>Still need help?</h2>
+          <p>Tell us your version, platform and what happened.</p>
+          <a
+            className="button button-primary"
+            href={community[0].href}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Ask on Discord ↗
+          </a>
+        </div>
+      </section>
+    </>
   );
 }

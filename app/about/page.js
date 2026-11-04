@@ -1,54 +1,90 @@
+import { Art, Button, PageIntro, SectionTitle } from "@/components/Ui";
+import { features } from "@/lib/site-content.mjs";
+import { metadataForPath } from "../seo";
+export const metadata = metadataForPath(
+  "/about",
+  "The Game | Shinobi New Era",
+  "Discover Eshik Games’ sandbox visual novel: explore Konoha, follow quests and meet the cast of Shinobi New Era.",
+);
 export default function About() {
   return (
-    <section className="mx-auto max-w-6xl px-6 py-24">
-      <div className="grid items-center gap-12 md:grid-cols-2">
-        <div>
-          <p className="mb-4 text-sm font-medium uppercase tracking-[0.3em] text-red-400/70">
-            About
-          </p>
-          <h2 className="text-4xl font-black leading-tight md:text-5xl">
-            Your story.
+    <>
+      <PageIntro
+        kicker="ABOUT THE GAME"
+        title={
+          <>
+            A world you know.
             <br />
-            Your rules.
-          </h2>
-          <p className="mt-6 text-lg leading-relaxed text-white/50">
-            Dive into a world where every action has consequences. Build
-            relationships, explore an open world, and shape the fate of the
-            shinobi.
-          </p>
-          <div className="mt-8 space-y-4">
-            {[
-              "Branching Paths",
-              "Open sandbox world to explore",
-              "Deep relationship system",
-            ].map((t, i) => (
-              <div key={i} className="flex items-center gap-3">
-                <span className="flex h-6 w-6 items-center justify-center rounded-full bg-red-500/20 text-xs text-red-400">
-                  ✓
-                </span>
-                <span className="text-white/70">{t}</span>
-              </div>
+            <em>A path of your own.</em>
+          </>
+        }
+        number="03"
+      >
+        A sandbox visual novel by Eshik Games, inspired by the world of Naruto
+        and Boruto.
+      </PageIntro>
+      <div className="shell">
+        <section className="section about-split">
+          <Art
+            src="/images/1.jpg"
+            alt="Official Shinobi New Era promotional art"
+          />
+          <div className="about-copy">
+            <p className="eyebrow">BEGIN YOUR LEGACY</p>
+            <h2>
+              Find your place
+              <br />
+              in <em>Konoha.</em>
+            </h2>
+            <p>
+              Explore the world, spend time with familiar characters and follow
+              the story through quests and encounters. Shinobi New Era brings
+              visual novel storytelling into a sandbox setting.
+            </p>
+            <p>
+              The game continues to develop. The Release Center is the home for
+              confirmed versions, downloads and future release notes.
+            </p>
+            <div className="button-row">
+              <Button href="/play">Play online</Button>
+              <Button href="/download" secondary>
+                Find your build
+              </Button>
+            </div>
+          </div>
+        </section>
+        <section className="section">
+          <SectionTitle
+            kicker="THE EXPERIENCE"
+            title="A story to spend time in."
+          />
+          <div className="feature-grid">
+            {features.map((f) => (
+              <article className="feature-card panel" key={f.number}>
+                <span className="feature-index">{f.number}</span>
+                <h3>{f.title}</h3>
+                <p>{f.text}</p>
+              </article>
             ))}
           </div>
-        </div>
-
-        <div className="relative">
-          <div className="absolute -inset-4 rounded-3xl bg-gradient-to-tr from-red-600/20 to-orange-500/10 blur-2xl" />
-          <div className="relative rounded-3xl border border-white/10 bg-white/5 p-8 backdrop-blur-xl">
-            <div className="aspect-video overflow-hidden rounded-2xl bg-gradient-to-br from-red-900/40 to-black">
-              <img src="/images/1.jpg" alt="Shinobi" className="h-full w-full object-cover" />
-            </div>
-            <p className="mt-6 text-sm text-white/40">Latest Update</p>
-            <p className="text-xl font-bold">Version 0.3</p>
-            <p className="mt-3 text-sm text-white/60">
-              A major story-focused update with new scenes, character events and new content.
-            </p>
-            <p className="mt-3 text-sm text-white/40">
-              Available now for supporters. Public release in one week.
-            </p>
+        </section>
+        <section className="section studio-note panel">
+          <p className="eyebrow">FROM ESHIK GAMES</p>
+          <h2>Follow the journey.</h2>
+          <p>
+            Explore the cast, see the public artwork and follow official updates
+            as new chapters take shape.
+          </p>
+          <div className="button-row">
+            <Button href="/characters" secondary>
+              Meet the characters
+            </Button>
+            <Button href="/blog" secondary>
+              Development journal
+            </Button>
           </div>
-        </div>
+        </section>
       </div>
-    </section>
+    </>
   );
 }

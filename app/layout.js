@@ -1,7 +1,13 @@
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { metadataForPath, siteDescription, siteName, siteTitle, siteUrl } from "./seo";
+import {
+  metadataForPath,
+  siteDescription,
+  siteName,
+  siteTitle,
+  siteUrl,
+} from "./seo";
 
 export const metadata = {
   metadataBase: new URL(siteUrl),
@@ -20,21 +26,23 @@ const websiteJsonLd = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="ru">
-      <body className="min-h-screen bg-[#0a0a0f] text-white antialiased">
+    <html lang="en">
+      <body>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify(websiteJsonLd).replace(/</g, "\\u003c"),
           }}
         />
-        {/* Свечение сверху */}
-        <div className="pointer-events-none fixed inset-x-0 top-0 h-[500px] bg-gradient-to-b from-red-600/10 via-transparent to-transparent" />
-
+        <a className="skip-link" href="#main-content">
+          Skip to content
+        </a>
         <Navbar />
 
         {/* Отступ под фикс-навбар */}
-        <main className="relative pt-16">{children}</main>
+        <main id="main-content" tabIndex={-1}>
+          {children}
+        </main>
 
         <Footer />
       </body>

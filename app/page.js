@@ -1,149 +1,220 @@
-"use client";
-
-import { motion } from "framer-motion";
 import Link from "next/link";
-
-export default function Home() {
-  const supportLinks = [
-    {
-      name: "Boosty",
-      url: "https://boosty.to/eshikgames", // 🔗 replace
-      color: "hover:border-orange-500/50 hover:text-orange-400",
-      icon: (
-        <svg viewBox="0 0 24 24" className="h-8 w-8" fill="currentColor">
-          <path d="M12 2L4 14h5l-2 8 9-12h-5l3-8z" />
-        </svg>
-      ),
-    },
-    {
-      name: "Patreon",
-      url: "https://www.patreon.com/cw/eshikgames", // 🔗 replace
-      color: "hover:border-red-500/50 hover:text-red-400",
-      icon: (
-        <svg viewBox="0 0 24 24" className="h-8 w-8" fill="currentColor">
-          <path d="M14.82 2.41c3.96 0 7.18 3.24 7.18 7.21 0 3.96-3.22 7.18-7.18 7.18-3.97 0-7.21-3.22-7.21-7.18 0-3.97 3.24-7.21 7.21-7.21M2 21.6h3.5V2.41H2V21.6z" />
-        </svg>
-      ),
-    },
-    {
-      name: "SubscribeStar",
-      url: "https://subscribestar.adult/eshik-games",
-      color: "hover:border-pink-500/50 hover:text-pink-400",
-      icon: (
-        <svg viewBox="0 0 24 24" className="h-8 w-8" fill="currentColor">
-          <path d="m12 2 3.09 6.26L22 9.27l-5 4.87L18.18 21 12 17.77 5.82 21 7 14.14 2 9.27l6.91-1.01L12 2z" />
-        </svg>
-      ),
-    },
-  ];
-
+import { Art, Button, FaqList, SectionTitle } from "@/components/Ui";
+import CharacterCards from "@/components/CharacterCards";
+import ReleaseBoard from "@/components/ReleaseBoard";
+import MotionScene from "@/components/MotionScene";
+import { community, faqs, features } from "@/lib/site-content.mjs";
+import { getReleaseCenter, getPosts } from "@/lib/releases/server";
+import { metadataForPath } from "./seo";
+export const dynamic = "force-dynamic";
+export const metadata = metadataForPath(
+  "/",
+  "Shinobi New Era — Begin your legacy",
+  "Explore Konoha, meet the characters and find the latest public and supporter release information. An independent visual novel by Eshik Games.",
+);
+export default async function Home() {
+  const center = await getReleaseCenter();
+  const posts = getPosts();
   return (
-    <div className="relative">
-      {/* Hero background image */}
-      <div className="pointer-events-none absolute inset-0 h-screen overflow-hidden">
-        <img
-          src="/images/hero.jpg"
-          alt="Shinobi New Era"
-          className="h-full w-full object-cover object-center"
-        />
-        <div className="absolute inset-0 bg-[#0a0a0f]/75" />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0f] via-transparent to-[#0a0a0f]/50" />
-      </div>
-
-      {/* HERO */}
-      <section className="relative flex min-h-[calc(100vh-4rem)] flex-col items-center justify-center px-6 text-center">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-        >
-          <span className="mb-8 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-1.5 text-xs text-white/60">
-            <span className="h-1.5 w-1.5 rounded-full bg-red-500" />
-            Shinobi New Era v0.3
-          </span>
-
-          <h1 className="mx-auto max-w-4xl text-6xl font-black leading-[0.95] tracking-tight md:text-8xl lg:text-9xl">
-            SHINOBI
-            <br />
-            <span className="bg-gradient-to-r from-red-500 via-red-400 to-orange-400 bg-clip-text text-transparent">
-              NEW ERA
+    <MotionScene>
+      <section className="home-hero">
+        <div className="hero-landscape">
+          <Art src="/images/hero.jpg" alt="" eager sizes="100vw" />
+        </div>
+        <div className="hero-shade" />
+        <div className="hero-embers" aria-hidden="true">
+          <i />
+          <i />
+          <i />
+          <i />
+          <i />
+        </div>
+        <div className="shell hero-content">
+          <div className="hero-topline">
+            <span className="eyebrow">ESHIK GAMES PRESENTS</span>
+            <span className="hero-coordinate mono">
+              VISUAL NOVEL / SANDBOX / 18+
             </span>
-          </h1>
-
-          <p className="mx-auto mt-8 max-w-xl text-lg text-white/60">
-            v0.3 is out now for supporters.
-            <br />
-            The public release arrives in one week.
-          </p>
-
-          <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row sm:flex-wrap">
-            <Link
-              href="#support"
-              className="w-full rounded-xl bg-red-600 px-8 py-4 font-semibold transition hover:bg-red-500 sm:w-auto"
-            >
-              Get v0.3 Early Access
-            </Link>
-            <Link
-              href="/download"
-              className="w-full rounded-xl border border-white/15 bg-white/5 px-8 py-4 font-semibold backdrop-blur-sm transition hover:bg-white/10 sm:w-auto"
-            >
-              Download for free
-            </Link>
-            <Link
-              href="/about"
-              className="w-full rounded-xl border border-white/15 bg-white/5 px-8 py-4 font-semibold backdrop-blur-sm transition hover:bg-white/10 sm:w-auto"
-            >
-              Learn more
-            </Link>
           </div>
-        </motion.div>
-
-        {/* Stats */}
-        <div className="mt-20 grid grid-cols-3 gap-8 border-t border-white/10 pt-8 md:gap-16">
-          {[
-            { num: "2K+", label: "Players" },
-            { num: "20+", label: "Scenes" },
-            { num: "∞", label: "Branching Paths" },
-          ].map((s, i) => (
-            <div key={i} className="text-center">
-              <p className="text-3xl font-black md:text-4xl">{s.num}</p>
-              <p className="mt-1 text-xs uppercase tracking-widest text-white/50">
-                {s.label}
+          <div className="hero-heading">
+            <span className="hero-overline">YOUR WORLD. YOUR CHOICES.</span>
+            <h1>
+              SHINOBI
+              <br />
+              <span>NEW ERA</span>
+              <b aria-hidden="true">.</b>
+            </h1>
+          </div>
+          <div className="hero-bottom">
+            <div>
+              <p>
+                A familiar world.
+                <br />A story that becomes <em>yours.</em>
               </p>
+              <div className="button-row">
+                <Button href="/download">Download the game</Button>
+                <Button href="/play" secondary>
+                  Play online
+                </Button>
+              </div>
+              <Link className="hero-support-link" href="/early-access">
+                Discover Early Access →
+              </Link>
             </div>
+            <aside className="hero-release">
+              <span className="badge">
+                <i />
+                RELEASE INTEL
+              </span>
+              <strong>{center.current?.version ?? "TBA"}</strong>
+              <span>Current public version</span>
+              <Link href="/download">Open Release Center ↗</Link>
+            </aside>
+          </div>
+          <div className="hero-baseline">
+            <span>BEGIN YOUR LEGACY</span>
+            <span>SCROLL TO DISCOVER ↓</span>
+            <span>01 / THE NEW ERA</span>
+          </div>
+        </div>
+      </section>
+      <div className="chapter-strip">
+        <div className="shell">
+          <span>EXPLORE KONOHA</span>
+          <i>✦</i>
+          <span>FOLLOW YOUR STORY</span>
+          <i>✦</i>
+          <span>MEET THE CHARACTERS</span>
+          <i>✦</i>
+          <span>SHAPE YOUR PATH</span>
+        </div>
+      </div>
+      <section className="shell section" data-reveal>
+        <SectionTitle
+          kicker="THE RELEASE BOARD"
+          title="The story moves forward."
+          href="/download"
+          linkLabel="All releases"
+        >
+          Current information. Official downloads. Everything in one place.
+        </SectionTitle>
+        <ReleaseBoard center={center} compact />
+      </section>
+      <section className="shell section about-split" data-reveal>
+        <div className="about-art">
+          <Art src="/images/1.jpg" alt="Shinobi New Era promotional artwork" />
+          <span className="image-caption">SNE / OFFICIAL ARTWORK</span>
+        </div>
+        <div className="about-copy">
+          <p className="eyebrow">WELCOME TO SHINOBI NEW ERA</p>
+          <h2>
+            A familiar world.
+            <br />A story of <em>your own.</em>
+          </h2>
+          <p>
+            Step into an independent visual novel inspired by the world of
+            Naruto and Boruto. Explore Konoha, get to know its people and find
+            your way through an evolving story.
+          </p>
+          <p>
+            From everyday encounters to quests that pull you further into the
+            world, your next chapter is waiting.
+          </p>
+          <Button href="/about" secondary>
+            Explore the game
+          </Button>
+        </div>
+      </section>
+      <section className="shell section" data-reveal>
+        <SectionTitle kicker="THE EXPERIENCE" title="More than a chapter." />
+        <div className="feature-grid">
+          {features.map((f) => (
+            <article className="feature-card panel" key={f.number}>
+              <span className="feature-index">{f.number}</span>
+              <p className="eyebrow">{f.tag}</p>
+              <h3>{f.title}</h3>
+              <p>{f.text}</p>
+            </article>
           ))}
         </div>
       </section>
-
-      {/* SUPPORT SECTION */}
-      <section id="support" className="relative mx-auto max-w-4xl scroll-mt-16 px-6 py-24">
-        <div className="text-center">
-          <p className="mb-4 text-sm font-medium uppercase tracking-[0.3em] text-red-400/70">
-            Support
-          </p>
-          <h2 className="text-4xl font-black md:text-5xl">
-            Support the Development
-          </h2>
-          <p className="mx-auto mt-4 max-w-lg text-white/50">
-            Get v0.3 Early Access through one of these supporter platforms.
-          </p>
+      <section className="section character-section" data-reveal>
+        <div className="shell">
+          <SectionTitle
+            kicker="FAMILIAR FACES. NEW STORIES."
+            title="People make the world."
+            href="/characters"
+            linkLabel="Meet the cast"
+          />
+          <CharacterCards limit={4} />
         </div>
-
-        <div className="mt-12 grid gap-4 sm:grid-cols-3">
-          {supportLinks.map((s, i) => (
+      </section>
+      <section className="shell section gallery-tease" data-reveal>
+        <SectionTitle
+          kicker="A GLIMPSE INSIDE"
+          title="Welcome to Konoha."
+          href="/gallery"
+          linkLabel="Open gallery"
+        />
+        <Link href="/gallery" className="gallery-panorama">
+          <Art
+            src="/images/hero.jpg"
+            alt="Panoramic night view of Konoha"
+            sizes="100vw"
+          />
+          <span>
+            THE WORLD OF SHINOBI NEW ERA <b aria-hidden="true">↗</b>
+          </span>
+        </Link>
+      </section>
+      <section className="shell section" id="support" data-reveal>
+        <SectionTitle
+          kicker="BUILT TOGETHER"
+          title="Be part of the next chapter."
+        >
+          Follow the project, meet other players, or support Eshik Games.
+        </SectionTitle>
+        <div className="community-grid">
+          {community.map((item, i) => (
             <a
-              key={i}
-              href={s.url}
+              href={item.href}
               target="_blank"
               rel="noopener noreferrer"
-              className={`group flex flex-col items-center gap-3 rounded-2xl border border-white/10 bg-white/5 p-6 text-white/70 transition ${s.color}`}
+              className="community-card panel"
+              key={item.name}
             >
-              <span className="transition group-hover:scale-110">{s.icon}</span>
-              <span className="font-semibold">{s.name}</span>
+              <span className="mono">0{i + 1}</span>
+              <h3>
+                {item.name}
+                <span aria-hidden="true">↗</span>
+              </h3>
+              <p>{item.detail}</p>
             </a>
           ))}
         </div>
       </section>
-    </div>
+      <section className="shell section home-devlog" data-reveal>
+        <SectionTitle
+          kicker="FROM THE STUDIO"
+          title="Development journal."
+          href="/blog"
+          linkLabel="Visit the devlog"
+        />
+        <p>
+          {posts.length
+            ? `${posts.length} confirmed updates from Eshik Games.`
+            : "The journal is ready for official announcements. New posts will appear when Eshik Games publishes them."}
+        </p>
+      </section>
+      <section className="shell section faq-section" data-reveal>
+        <SectionTitle
+          kicker="BEFORE YOU BEGIN"
+          title="A few things to know."
+          href="/faq"
+          linkLabel="All questions"
+        />
+        <FaqList items={faqs.slice(0, 4)} />
+      </section>
+    </MotionScene>
   );
 }

@@ -1,36 +1,74 @@
+import Link from "next/link";
+import { community } from "@/lib/site-content.mjs";
 export default function Footer() {
-  const links = [
-    { name: "Boosty", url: "https://boosty.to/eshikgames" },
-    { name: "Patreon", url: "https://www.patreon.com/cw/eshikgames" },
-    { name: "Itch.io", url: "https://eshik-games.itch.io/shinobi-new-era" },
-    { name: "Discord", url: "https://discord.gg/HpGgzDgycE" },
-    { name: "SubscribeStar", url: "https://subscribestar.adult/eshik-games" },
-  ];
-
   return (
-    <footer className="mt-20 flex flex-col items-center gap-4 border-t border-white/5 py-16 text-center">
-      <div className="flex flex-col leading-none items-center">
-        <span className="text-lg font-black">
-          SHINOBI<span className="text-red-500">.</span>
-        </span>
-        <span className="text-[10px] font-medium tracking-wide text-white/40">
-          by Eshik Games
-        </span>
-      </div>
-      <div className="flex flex-wrap justify-center gap-6 px-6 text-sm text-white/40">
-        {links.map((l) => (
+    <footer className="site-footer">
+      <div className="shell footer-top">
+        <div>
+          <p className="eyebrow">YOUR NEXT CHAPTER STARTS HERE</p>
+          <h2>
+            Stay in the <em>story.</em>
+          </h2>
+          <p>
+            Development updates, new chapters and a world worth coming back to.
+          </p>
           <a
-            key={l.name}
-            href={l.url}
+            className="text-link"
+            href={community[0].href}
             target="_blank"
             rel="noopener noreferrer"
-            className="hover:text-white"
           >
-            {l.name}
+            Join the Discord ↗
           </a>
-        ))}
+        </div>
+        <div className="footer-links">
+          <div>
+            <h3>Explore</h3>
+            {[
+              ["/about", "The game"],
+              ["/characters", "Characters"],
+              ["/gallery", "Gallery"],
+              ["/play", "Play online"],
+            ].map(([href, label]) => (
+              <Link href={href} key={href}>
+                {label}
+              </Link>
+            ))}
+          </div>
+          <div>
+            <h3>Keep up</h3>
+            {[
+              ["/download", "Release Center"],
+              ["/early-access", "Early Access"],
+              ["/blog", "Devlog"],
+              ["/faq", "FAQ & help"],
+            ].map(([href, label]) => (
+              <Link href={href} key={href}>
+                {label}
+              </Link>
+            ))}
+          </div>
+        </div>
       </div>
-      <p className="text-xs text-white/20">© 2026 Shinobi New Era</p>
+      <div className="shell footer-bottom">
+        <Link href="/" className="footer-brand">
+          SHINOBI <span>NEW ERA</span>
+          <small>© {new Date().getFullYear()} Eshik Games</small>
+        </Link>
+        <div>
+          {community.map((item) => (
+            <a
+              key={item.name}
+              href={item.href}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {item.name} ↗
+            </a>
+          ))}
+        </div>
+        <span className="adult-label">18+ · MATURE AUDIENCES</span>
+      </div>
     </footer>
   );
 }

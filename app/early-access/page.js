@@ -1,72 +1,176 @@
 import Link from "next/link";
+import { EmptyState, FaqList, PageIntro, SectionTitle } from "@/components/Ui";
+import ReleaseBoard from "@/components/ReleaseBoard";
 import SupporterAccess from "./SupporterAccess";
-import Countdown from "./Countdown";
-import { earlyAccessConfig as config } from "./config";
+import { earlyAccessConfig } from "./config";
+import { getReleaseCenter } from "@/lib/releases/server";
 import { metadataForPath } from "../seo";
-import "./early-access.css";
-import "./supporter-access.css";
-
-const title = "Early Access | Shinobi New Era";
-const description = "Explore Shinobi New Era early access, supporter platforms, release information, and the free public download.";
-
-export const metadata = {
-  ...metadataForPath("/early-access"),
-  title,
-  description,
-  openGraph: { ...metadataForPath("/early-access").openGraph, title, description, images: [{ url: "/images/hero.jpg", alt: "Shinobi New Era" }] },
-};
-
-const faqs = [
-  { question: "How do I get the public build?", answer: <>Visit the <Link href="/download">public download page</Link> and choose your platform.</> },
-  { question: "Can I sign in with a supporter account here?", answer: "Patreon sign-in appears only when secure verification is configured and enabled. A supporter-platform visit is not a sign-in to this site." },
-  { question: "Where can I find supporter updates?", answer: "Check the official Eshik Games page on the platform you support. Availability and eligibility are determined there until site verification is ready." },
-  { question: "When is the next release?", answer: "No release date has been confirmed for this page. A countdown will appear only after Eshik Games provides a date." },
-];
-
-export default function EarlyAccessPage() {
+export const dynamic = "force-dynamic";
+export const metadata = metadataForPath(
+  "/early-access",
+  "Patreon Early Access | Shinobi New Era",
+  "Verify your Patreon subscription, check supporter build availability and find official Early Access information for Shinobi New Era.",
+);
+export default async function EarlyAccess() {
+  const center = await getReleaseCenter();
   return (
-    <div className="ea-page">
-      <section className="ea-hero" aria-labelledby="ea-title">
-        <div className="ea-hero__image" aria-hidden="true" />
-        <div className="ea-hero__grain" aria-hidden="true" />
-        <div className="ea-container ea-hero__content">
-          <p className="ea-eyebrow"><span /> ESHIK GAMES · SHINOBI NEW ERA</p>
-          <h1 id="ea-title">A new era<br /><em>begins early.</em></h1>
-          <p className="ea-hero__intro">Follow upcoming builds, support development, and find the latest public version of Shinobi New Era.</p>
-          <div className="ea-hero__actions">
-            <a className="ea-button ea-button--red" href="#supporters">Explore supporter platforms <span aria-hidden="true">→</span></a>
-            <Link className="ea-button ea-button--outline" href="/download">Get the public build <span aria-hidden="true">→</span></Link>
-          </div>
-          <p className="ea-hero__note">Protected downloads require a verified supporter session.</p>
-        </div>
-        <div className="ea-hero__index" aria-hidden="true">01 / EARLY ACCESS</div>
-      </section>
-
-      <div className="ea-container">
-        <section className="ea-releases ea-section" aria-labelledby="releases-title">
-          <div className="ea-section__heading"><span className="ea-kicker">RELEASE INTEL</span><h2 id="releases-title">The release board</h2><p>Confirmed details will appear here as they are announced by Eshik Games.</p></div>
-          <div className="ea-release-grid">
-            <article className="ea-release-card ea-release-card--current"><span className="ea-release-card__number">01 / CURRENT</span><div><p className="ea-release-card__label">Current early build</p><h3>{config.currentRelease?.version ?? "To be announced"}</h3><p>{config.currentRelease?.summary ?? "No early build has been confirmed for this page."}</p></div><span className="ea-release-card__line" /></article>
-            <article className="ea-release-card"><span className="ea-release-card__number">02 / NEXT</span><div><p className="ea-release-card__label">Next release</p><h3>{config.nextRelease?.version ?? "Awaiting announcement"}</h3><p>{config.nextRelease?.summary ?? "A release date has not been set here."}</p></div><span className="ea-release-card__line" /></article>
-          </div>
-          <Countdown unlockAt={config.unlockAt} />
+    <>
+      <PageIntro
+        kicker="FOR THE NEXT CHAPTER"
+        title={
+          <>
+            Support the story.
+            <br />
+            <em>Step in early.</em>
+          </>
+        }
+        number="EA"
+      >
+        Connect Patreon to check your supporter access. Availability depends on
+        the published build, eligible tier and unlock date.
+      </PageIntro>
+      <div className="shell">
+        <section className="section" id="supporters">
+          <SectionTitle
+            kicker="YOUR SUPPORTER PASS"
+            title="A place in the new era."
+          />
+          <SupporterAccess
+            releases={center.early}
+            availability={center.availability}
+          />
         </section>
-
-        <section id="supporters" className="ea-section ea-supporters" aria-labelledby="supporters-title">
-          <div className="ea-section__heading"><span className="ea-kicker">SUPPORT THE JOURNEY</span><h2 id="supporters-title">Choose your platform</h2><p>Visit an official Eshik Games supporter page. These links open the platform; they do not verify access on this site.</p></div>
-          <div className="ea-platform-grid">
-            {config.supporters.map((platform, index) => <article className={`ea-platform ea-platform--${platform.tone}`} key={platform.name}><div className="ea-platform__top"><span className="ea-platform__mark" aria-hidden="true">{platform.mark}</span><span className="ea-platform__number">0{index + 1}</span></div><h3>{platform.name}</h3>{platform.integrationStatus && <span className="ea-platform__status">{platform.integrationStatus.replace("_", " ")}</span>}<p>View the official Eshik Games page for current supporter posts and details.</p><a href={platform.href} target="_blank" rel="noopener noreferrer" aria-label={`Visit Eshik Games on ${platform.name} (opens in a new tab)`}>Visit {platform.name} <span aria-hidden="true">→</span></a></article>)}
+        <section className="section">
+          <SectionTitle
+            kicker="THE SAME STORY. A NEW CHAPTER."
+            title="The release board."
+            href="/download"
+            linkLabel="Open Release Center"
+          />
+          <ReleaseBoard center={center} />
+        </section>
+        <section className="section">
+          <SectionTitle
+            kicker="CHOOSE YOUR PLATFORM"
+            title="Support Eshik Games."
+          >
+            Visit official creator pages for their current subscriptions and
+            posts.
+          </SectionTitle>
+          <div className="support-platforms">
+            {earlyAccessConfig.supporters.map((platform) => (
+              <article className="panel support-platform" key={platform.name}>
+                <span className="platform-mark" aria-hidden="true">
+                  {platform.mark}
+                </span>
+                <h3>{platform.name}</h3>
+                <span className="badge badge-muted">
+                  {platform.integrationStatus?.replaceAll("_", " ") ??
+                    "PATREON VERIFICATION"}
+                </span>
+                <p>
+                  {platform.name === "Patreon"
+                    ? "Sign in above to check your current subscription. Visiting the creator page alone does not verify access."
+                    : "Account linking is not available on this site. Visit the platform for its current posts and details."}
+                </p>
+                <a
+                  className="text-link"
+                  href={platform.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Visit {platform.name} ↗
+                </a>
+              </article>
+            ))}
           </div>
-          <SupporterAccess releaseId={config.currentRelease?.id ?? null} />
         </section>
-
-        <section className="ea-section ea-comparison" aria-labelledby="comparison-title">
-          <div className="ea-section__heading"><span className="ea-kicker">YOUR PATH IN</span><h2 id="comparison-title">Public &amp; supporter access</h2><p>What you can do on this site today.</p></div>
-          <div className="ea-compare-grid"><article><span className="ea-compare-grid__tag">OPEN TO EVERYONE</span><h3>Public build</h3><p>Download the currently listed public version from the existing download page.</p><Link href="/download">Go to public downloads <span aria-hidden="true">→</span></Link></article><article><span className="ea-compare-grid__tag">THROUGH SUPPORTER PLATFORMS</span><h3>Early access</h3><p>See each platform for its current posts and eligibility. Direct access to protected builds on this site is pending verification.</p><a href="#supporters">View the platforms <span aria-hidden="true">↑</span></a></article></div>
+        <section className="section">
+          <SectionTitle
+            kicker="WHAT YOUR PASS MEANS"
+            title="Public & supporter access."
+          />
+          <div className="table-scroll">
+            <table className="comparison-table">
+              <caption>Benefits implemented by this website</caption>
+              <thead>
+                <tr>
+                  <th scope="col">On this site</th>
+                  <th scope="col">Public</th>
+                  <th scope="col">Eligible Patreon supporter</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">Listed public downloads</th>
+                  <td>Available</td>
+                  <td>Available</td>
+                </tr>
+                <tr>
+                  <th scope="row">Browser edition</th>
+                  <td>Available</td>
+                  <td>Available</td>
+                </tr>
+                <tr>
+                  <th scope="row">Published early builds</th>
+                  <td>Not included</td>
+                  <td>After tier & unlock checks</td>
+                </tr>
+                <tr>
+                  <th scope="row">Current eligible tiers</th>
+                  <td>—</td>
+                  <td>
+                    Resonance Adept · Otsutsuki Chosen · New Era Architect
+                  </td>
+                </tr>
+                <tr>
+                  <th scope="row">Guaranteed release dates</th>
+                  <td>None announced</td>
+                  <td>None announced</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p className="muted">
+            Other platform benefits are described on the creator’s official
+            page. This table makes no promise of unannounced builds or in-game
+            privileges.
+          </p>
         </section>
-
-        <section className="ea-section ea-faq" aria-labelledby="faq-title"><div className="ea-section__heading"><span className="ea-kicker">NEED TO KNOW</span><h2 id="faq-title">Questions, answered.</h2></div><div className="ea-faq__list">{faqs.map((faq, index) => <details key={faq.question}><summary><span className="ea-faq__index">0{index + 1}</span><span>{faq.question}</span><span className="ea-faq__plus" aria-hidden="true">+</span></summary><div className="ea-faq__answer">{faq.answer}</div></details>)}</div></section>
+        <section className="section narrow">
+          <SectionTitle
+            kicker="BEFORE YOU CONNECT"
+            title="Access, explained."
+          />
+          <FaqList
+            items={[
+              {
+                question: "Does signing in guarantee a download?",
+                answer:
+                  "No. The server checks the live subscription, eligible tier, published release and unlock date before issuing a temporary link. An empty release list means there is no build to download here.",
+              },
+              {
+                question: "Which Patreon tiers are eligible?",
+                answer:
+                  "Resonance Adept, Otsutsuki Chosen and New Era Architect are configured for this site’s Early Access. The current subscription must be active.",
+              },
+              {
+                question: "Can I use SubscribeStar or Boosty to sign in?",
+                answer:
+                  "SubscribeStar is pending approval and Boosty is under review. Neither has a working sign-in flow on this website.",
+              },
+            ]}
+          />
+          {center.availability === "error" && (
+            <EmptyState title="Release information is temporarily unavailable">
+              Please try again later. Download access remains protected.
+            </EmptyState>
+          )}
+          <Link href="/download" className="text-link">
+            Get a public build ↗
+          </Link>
+        </section>
       </div>
-    </div>
+    </>
   );
 }
