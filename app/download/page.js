@@ -80,7 +80,7 @@ export default async function Downloads() {
           <p className="guide-download-note">Choose your platform. All current download buttons open the official itch.io page.</p>
           {center.current && <DownloadCards release={center.current} />}
           <p className="notice">{publicBetaNote}</p>
-          <div className="simple-links"><Link href="/play">Play the older browser edition →</Link><a href="#guide">Installation help →</a><a href="#previous">Older versions →</a></div>
+          <div className="simple-links"><Link href="/play">Play the 0.4beta.fix browser edition →</Link><a href="#guide">Installation help →</a><a href="#previous">Older versions →</a></div>
           <details className="simple-details">
             <summary>Which file should I choose on itch.io?</summary>
             <ul className="public-file-list">{publicFiles.map((file) => <li key={file.name}><strong>{file.platforms}</strong> — {file.name} · {file.size}</li>)}</ul>

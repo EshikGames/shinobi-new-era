@@ -1,0 +1,10 @@
+{
+  "version": "0.4beta.fix",
+  "bytes": 165437412,
+  "sha256": "260a7aaa24f159481d5a30ff9a481e128e64bf5bd86751e554a4abd4629cdbf9",
+  "parts": [
+    "game.zip.part000",
+    "game.zip.part001",
+    "game.zip.part002"
+  ]
+}

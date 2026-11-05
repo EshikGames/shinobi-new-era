@@ -9,3 +9,6 @@ dist
 node_modules/
 .next/
 *.zip
+# Reconstructed from checksum-verified source parts before build.
+/public/game/game.zip
+/public/game/game.zip.*.tmp

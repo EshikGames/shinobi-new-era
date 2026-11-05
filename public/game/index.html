@@ -217,13 +217,13 @@
 
   <script>
       // The URL to game.zip, relative to the URL of this file.
-      window.gameZipURL = 'game.zip';
+      window.gameZipURL = 'game.zip?v=0.4beta.fix';
 
       // Register the service worker.
       if (navigator.serviceWorker) {
-          if (!navigator.serviceWorker.controller) {
-              navigator.serviceWorker.register('./service-worker.js', { updateViaCache: 'all' });
-          }
+          navigator.serviceWorker.register('./service-worker.js', { updateViaCache: 'none' }).catch(() => {
+              console.warn('Offline mode is unavailable; online play is still available.');
+          });
       }
   </script>
   <script src="renpy-pre.js"></script>

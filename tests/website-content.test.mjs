@@ -6,14 +6,14 @@ import { editorialReleases, editorialPosts } from '../lib/releases/catalog.mjs';
 import { gameLanguages, publicFiles, browserEdition } from '../lib/game-info.mjs';
 import { releaseCenter, releaseArticles } from '../lib/releases/model.mjs';
 
-test('public Beta, planned Act III and the legacy browser edition remain distinct', () => {
+test('public browser Beta and downloads remain separate from planned Act III', () => {
   const center = releaseCenter(editorialReleases);
   assert.match(center.current.description, /Act III is not included/);
   assert.match(center.next.title, /Act III in development/);
   assert.equal(center.next.is_published, false);
   assert.equal(center.next.public_release_at, null);
   assert.deepEqual(center.early, []);
-  assert.equal(browserEdition.version, '0.2b');
+  assert.equal(browserEdition.version, '0.4beta.fix');
   assert.equal(publicFiles.length, 3);
   assert.ok(publicFiles.every(file => file.version === '0.4beta.fix'));
   assert.equal(new Set(gameLanguages).size, 14);

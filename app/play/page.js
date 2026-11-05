@@ -163,7 +163,7 @@ export default function Play() {
         )}
         <dialog className="play-help-dialog" ref={help} aria-labelledby="play-help-title">
           <div className="play-help-heading"><h2 id="play-help-title">Playing in your browser</h2><button type="button" onClick={() => help.current?.close()} aria-label="Close help">×</button></div>
-          <p>Browser archive · v{browserEdition.version}. This is the older web edition, separate from the current public Beta.</p>
+          <p>Browser edition · v{browserEdition.version}. Play the public Beta online. Keep a backup of your saves before importing them into a new version.</p>
           <h3>Sound</h3><p>Click or tap inside the game to allow audio. Use the game’s Settings menu to adjust music and sound volume.</p>
           <h3>Loading & saves</h3><p>The first load can take a moment. Save using the game’s own menu, and keep a backup before clearing browser data.</p>
           <div className="play-help-actions"><Link href="/download">Get the current version ↗</Link><a href="https://discord.gg/HpGgzDgycE" target="_blank" rel="noopener noreferrer">Report an issue ↗</a>{state === 'ready' && <button type="button" onClick={() => { help.current?.close(); stop(); }}>Close game</button>}</div>
